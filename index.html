@@ -233,12 +233,12 @@
   })();
 </script>
   
-// ----- CONFIG -----
-  const CONFIG = {
-    region: 'us-EAST-1',
-    cognito: { userPoolId: 'us-east-1_VKZn9Dc4v', appClientId: '26ibua8ee0mvj0sm42c0qr3tou' },
+// ----- CONFIG.js -----
+    cognito : {
+    region : 'us-EAST-1',
+    cognito : userPoolId: 'us-east-1_VKZn9Dc4v', appClientId: '26ibua8ee0mvj0sm42c0qr3tou'
+  },
   
-  };
 <!-- Toast notification (demo) -->
 <div class="fixed bottom-6 right-6 bg-charcoal text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 glass" style="backdrop-filter:blur(8px); background: rgba(30,41,59,0.8);">
   <i class="fas fa-check-circle text-accent-gold"></i> <span>Welcome, dealer · ready to order?</span>
