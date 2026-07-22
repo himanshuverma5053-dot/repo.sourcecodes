@@ -1,241 +1,861 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
-  <title>Magadh Tyres · Dealer Portal</title>
-  <!-- Tailwind + Font Awesome (CDN) -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Magadh Tyres · B2B Dealer Platform</title>
+  <!-- Tailwind + Font Awesome -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- Google Font (Inter) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- consolidated CSS -->
   <style>
-    * { font-family: 'Inter', sans-serif; }
-    body { background: #f8fafc; }
-    /* glassmorphism utility */
-    .glass {
-      background: rgba(255,255,255,0.5);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.25);
+    /* ============================================================
+       MAGADH TYRES · CONSOLIDATED STYLES
+       Includes: base, glassmorphism, forms, dashboard, responsive
+       ============================================================ */
+    :root {
+      --primary: #6b3fa0;
+      --primary-dark: #4f2a7a;
+      --primary-light: #8a4bcd;
+      --purple-bg: #f8faff;
+      --glass-bg: rgba(255,255,255,0.65);
+      --shadow: 0 12px 32px rgba(90,50,150,0.08);
+      --radius: 16px;
+      --transition: all 0.3s ease;
     }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--purple-bg);
+      color: #1a1a2e;
+      line-height: 1.6;
+    }
+    .container { max-width:1280px; margin:0 auto; padding:0 20px; }
     .glass-card {
-      background: rgba(255,255,255,0.6);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.4);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border:1px solid rgba(255,255,255,0.25);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
     }
-    .brand-purple { color: #4A1A8A; }
-    .bg-brand-purple { background-color: #4A1A8A; }
-    .border-brand-purple { border-color: #4A1A8A; }
-    .hover\:bg-brand-purple:hover { background-color: #3E1580; }
-    .accent-gold { color: #D4A13E; }
-    .bg-accent-gold { background-color: #D4A13E; }
-    .hover\:bg-accent-gold:hover { background-color: #C28E2E; }
-    .text-charcoal { color: #1E293B; }
-    .bg-charcoal { background-color: #1E293B; }
-    /* transitions */
-    .page { display: none; animation: fadeIn 0.3s ease; }
-    .page.active { display: block; }
-    @keyframes fadeIn { 0% { opacity:0; transform: translateY(8px); } 100% { opacity:1; transform: translateY(0); } }
-    .product-card:hover { transform: scale(1.01); box-shadow: 0 20px 40px -12px rgba(74,26,138,0.2); }
-    .nav-link { transition: 0.2s; border-bottom: 2px solid transparent; }
-    .nav-link:hover, .nav-link.active { border-bottom-color: #D4A13E; color: #4A1A8A; }
-    /* scroll */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #f1f5f9; }
-    ::-webkit-scrollbar-thumb { background: #4A1A8A; border-radius: 8px; }
+    .btn-primary {
+      background: var(--primary); color:#fff; padding:12px 32px; border-radius:50px;
+      font-weight:600; border:none; cursor:pointer; transition:var(--transition);
+      display:inline-flex; align-items:center; gap:8px; text-decoration:none;
+    }
+    .btn-primary:hover { background:var(--primary-dark); transform:scale(1.02); box-shadow:0 8px 24px rgba(90,50,150,0.3); }
+    .btn-secondary {
+      background:rgba(255,255,255,0.7); backdrop-filter:blur(4px); color:var(--primary);
+      padding:12px 32px; border-radius:50px; font-weight:600;
+      border:1px solid rgba(107,63,160,0.3); cursor:pointer; transition:var(--transition);
+      display:inline-flex; align-items:center; gap:8px; text-decoration:none;
+    }
+    .btn-secondary:hover { background:rgba(107,63,160,0.08); }
+
+    /* ----- HEADER ----- */
+    .main-header {
+      background:rgba(255,255,255,0.8); backdrop-filter:blur(12px);
+      position:sticky; top:0; z-index:1000; border-bottom:1px solid rgba(107,63,160,0.1);
+      padding:0 20px;
+    }
+    .main-header .container { display:flex; justify-content:space-between; align-items:center; height:72px; }
+    .logo { display:flex; align-items:center; gap:8px; }
+    .logo i { font-size:24px; color:var(--primary); }
+    .logo span { font-size:24px; font-weight:700; color:#1a1a2e; }
+    .logo span span { color:#4a4a6a; }
+    .badge-b2b { font-size:10px; background:rgba(107,63,160,0.12); color:var(--primary); padding:2px 12px; border-radius:50px; font-weight:600; margin-left:8px; }
+    .main-nav { display:flex; gap:32px; }
+    .main-nav a { color:#4a4a6a; text-decoration:none; font-weight:500; font-size:14px; transition:var(--transition); position:relative; }
+    .main-nav a:hover, .main-nav a.active { color:var(--primary); }
+    .main-nav a.active::after { content:''; position:absolute; bottom:-4px; left:0; width:100%; height:2px; background:var(--primary); border-radius:2px; }
+    .header-actions { display:flex; align-items:center; gap:16px; }
+    .btn-signin { background:var(--primary); color:#fff; padding:8px 24px; border-radius:50px; font-weight:600; font-size:14px; text-decoration:none; transition:var(--transition); }
+    .btn-signin:hover { background:var(--primary-dark); }
+    .cart-link { position:relative; color:#4a4a6a; font-size:20px; transition:var(--transition); }
+    .cart-link:hover { color:var(--primary); }
+    .cart-count { position:absolute; top:-8px; right:-8px; background:var(--primary); color:#fff; font-size:10px; width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; }
+
+    /* ----- HERO ----- */
+    .hero-section { padding:60px 0 40px; background:linear-gradient(135deg, rgba(107,63,160,0.05), rgba(138,75,205,0.05)); }
+    .hero-section .container { display:flex; gap:60px; align-items:center; }
+    .hero-content { flex:1; }
+    .hero-badge { display:inline-block; background:rgba(107,63,160,0.12); color:var(--primary-dark); padding:4px 16px; border-radius:50px; font-size:12px; font-weight:600; margin-bottom:16px; }
+    .hero-content h1 { font-size:48px; font-weight:800; line-height:1.15; color:#1a1a2e; }
+    .hero-content h1 span { color:var(--primary); }
+    .hero-content p { font-size:18px; color:#4a4a6a; max-width:500px; margin:16px 0 32px; }
+    .hero-actions { display:flex; gap:16px; flex-wrap:wrap; }
+    .hero-features { display:flex; gap:24px; margin-top:32px; }
+    .hero-features span { display:flex; align-items:center; gap:8px; font-size:14px; color:#4a4a6a; }
+    .hero-features i { color:var(--primary); }
+    .hero-quick-order { flex:0 0 340px; }
+    .quick-order-card { padding:28px; }
+    .card-header { display:flex; align-items:center; gap:12px; padding-bottom:16px; border-bottom:1px solid rgba(107,63,160,0.1); }
+    .card-header i { font-size:40px; color:var(--primary); }
+    .card-header p { font-weight:600; margin:0; }
+    .card-body { margin-top:16px; display:flex; flex-direction:column; gap:12px; }
+    .form-input { width:100%; padding:12px 16px; border:1px solid rgba(107,63,160,0.2); border-radius:50px; background:rgba(255,255,255,0.5); outline:none; transition:var(--transition); }
+    .form-input:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(107,63,160,0.1); }
+    .btn-add-order { background:var(--primary); color:#fff; padding:12px; border:none; border-radius:50px; font-weight:600; cursor:pointer; transition:var(--transition); display:flex; align-items:center; justify-content:center; gap:8px; }
+    .btn-add-order:hover { background:var(--primary-dark); }
+
+    /* ----- CATEGORIES ----- */
+    .categories-section { padding:40px 0; }
+    .section-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+    .section-header h2 { font-size:22px; color:#1a1a2e; display:flex; align-items:center; gap:10px; }
+    .section-header h2 i { color:var(--primary); }
+    .view-all { color:var(--primary); text-decoration:none; font-weight:500; font-size:14px; display:flex; align-items:center; gap:4px; }
+    .categories-scroll { display:flex; gap:12px; overflow-x:auto; padding:8px 0; scrollbar-width:none; }
+    .categories-scroll::-webkit-scrollbar { display:none; }
+    .category-badge { background:rgba(107,63,160,0.08); color:var(--primary-dark); padding:8px 20px; border-radius:50px; font-size:14px; font-weight:500; white-space:nowrap; cursor:pointer; transition:var(--transition); display:flex; align-items:center; gap:8px; }
+    .category-badge:hover { background:rgba(107,63,160,0.16); transform:translateY(-2px); }
+
+    /* ----- PRODUCTS ----- */
+    .products-section { padding:20px 0 40px; }
+    .filter-tabs { display:flex; gap:8px; }
+    .filter-tabs button { padding:6px 16px; border:none; border-radius:50px; font-size:13px; font-weight:500; cursor:pointer; transition:var(--transition); background:#f0f0f5; color:#4a4a6a; }
+    .filter-tabs button.active { background:rgba(107,63,160,0.12); color:var(--primary); }
+    .filter-tabs button:hover { background:rgba(107,63,160,0.08); }
+    .products-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:20px; margin-top:20px; }
+    .product-card { padding:20px; transition:var(--transition); }
+    .product-card:hover { transform:translateY(-6px); box-shadow:0 16px 40px rgba(90,50,150,0.12); }
+    .product-img { height:140px; background:#ede9f7; border-radius:12px; display:flex; align-items:center; justify-content:center; }
+    .product-img i { font-size:48px; color:rgba(107,63,160,0.2); }
+    .product-card h3 { font-weight:600; margin-top:12px; font-size:16px; }
+    .product-card .sku { font-size:12px; color:#8a8a9e; }
+    .product-price { display:flex; justify-content:space-between; align-items:center; margin-top:8px; }
+    .product-price .price { font-weight:700; color:var(--primary); font-size:18px; }
+    .product-price .dealer-badge { font-size:10px; background:rgba(107,63,160,0.1); padding:2px 12px; border-radius:50px; color:var(--primary); }
+    .btn-quick-add { width:100%; margin-top:12px; padding:8px; border:1px solid rgba(107,63,160,0.3); border-radius:50px; background:transparent; color:var(--primary); font-weight:500; cursor:pointer; transition:var(--transition); display:flex; align-items:center; justify-content:center; gap:6px; }
+    .btn-quick-add:hover { background:rgba(107,63,160,0.06); }
+
+    /* ----- CTA ----- */
+    .quick-order-cta { padding:40px 0; }
+    .cta-card { padding:40px 48px; display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; }
+    .cta-badge { display:inline-block; color:var(--primary); font-weight:600; font-size:13px; }
+    .cta-content h3 { font-size:28px; margin:8px 0 12px; color:#1a1a2e; }
+    .cta-content h3 span { color:var(--primary); }
+    .cta-content p { color:#4a4a6a; margin-bottom:20px; }
+    .cta-features { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .feature-item { background:rgba(255,255,255,0.4); backdrop-filter:blur(4px); padding:16px; border-radius:12px; text-align:center; }
+    .feature-item i { font-size:24px; color:var(--primary); display:block; margin-bottom:4px; }
+    .feature-item span { font-size:13px; font-weight:500; }
+
+    /* ----- KNOWLEDGE ----- */
+    .knowledge-section { padding:20px 0 40px; }
+    .knowledge-section h2 { font-size:22px; margin-bottom:20px; color:#1a1a2e; display:flex; align-items:center; gap:10px; }
+    .knowledge-section h2 i { color:var(--primary); }
+    .knowledge-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(250px,1fr)); gap:20px; }
+    .knowledge-card { padding:24px; }
+    .knowledge-card i { font-size:32px; color:var(--primary); }
+    .knowledge-card h4 { margin:8px 0 4px; font-size:16px; }
+    .knowledge-card p { font-size:13px; color:#4a4a6a; }
+
+    /* ----- FOOTER ----- */
+    .main-footer { margin-top:48px; background:rgba(107,63,160,0.04); border-top:1px solid rgba(107,63,160,0.08); padding:40px 0 20px; }
+    .footer-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:40px; }
+    .footer-grid h5 { font-size:18px; color:var(--primary-dark); }
+    .footer-grid h6 { font-size:14px; color:#1a1a2e; margin-bottom:12px; }
+    .footer-grid ul { list-style:none; }
+    .footer-grid ul li { margin-bottom:8px; }
+    .footer-grid ul li a { color:#4a4a6a; text-decoration:none; font-size:14px; transition:var(--transition); }
+    .footer-grid ul li a:hover { color:var(--primary); }
+    .footer-bottom { border-top:1px solid rgba(107,63,160,0.08); margin-top:32px; padding-top:20px; display:flex; justify-content:center; gap:32px; font-size:12px; color:#8a8a9e; flex-wrap:wrap; }
+    .footer-bottom i { margin-right:4px; }
+
+    /* ----- AUTH / FORMS (login, signup, forgot) ----- */
+    .auth-page { display:flex; align-items:center; justify-content:center; min-height:100vh; background:linear-gradient(135deg, #f8faff 0%, #ede9f7 100%); padding:20px; }
+    .auth-container { width:100%; max-width:480px; }
+    .auth-card { padding:40px 36px; background:rgba(255,255,255,0.8); backdrop-filter:blur(16px); border-radius:24px; box-shadow:0 24px 64px rgba(90,50,150,0.12); }
+    .auth-logo { display:inline-flex; align-items:center; gap:8px; text-decoration:none; font-size:20px; font-weight:700; color:#1a1a2e; margin-bottom:24px; }
+    .auth-logo i { color:var(--primary); font-size:20px; }
+    .auth-logo span span { color:#4a4a6a; }
+    .auth-header { margin-bottom:28px; }
+    .auth-header h2 { font-size:26px; font-weight:700; color:#1a1a2e; margin:4px 0 4px; }
+    .auth-header p { color:#4a4a6a; font-size:14px; }
+    .auth-form { display:flex; flex-direction:column; gap:16px; }
+    .form-group { position:relative; }
+    .form-group label { display:block; font-size:13px; font-weight:500; color:#1a1a2e; margin-bottom:4px; }
+    .form-group label i { color:var(--primary); margin-right:6px; }
+    .form-group input { width:100%; padding:12px 16px; border:1px solid rgba(107,63,160,0.15); border-radius:12px; background:rgba(255,255,255,0.5); font-size:14px; transition:var(--transition); outline:none; }
+    .form-group input:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(107,63,160,0.08); }
+    .form-group input::placeholder { color:#b0b0c4; }
+    .toggle-password { position:absolute; right:12px; top:38px; background:none; border:none; color:#8a8a9e; cursor:pointer; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .form-options { display:flex; justify-content:space-between; align-items:center; font-size:13px; }
+    .checkbox-label { display:flex; align-items:center; gap:6px; cursor:pointer; color:#4a4a6a; }
+    .checkbox-label a { color:var(--primary); text-decoration:none; }
+    .forgot-link { color:var(--primary); text-decoration:none; font-weight:500; }
+    .btn-auth { background:var(--primary); color:#fff; padding:14px; border:none; border-radius:12px; font-size:16px; font-weight:600; cursor:pointer; transition:var(--transition); display:flex; align-items:center; justify-content:center; gap:8px; }
+    .btn-auth:hover { background:var(--primary-dark); transform:scale(1.01); }
+    .auth-footer { text-align:center; margin-top:20px; font-size:14px; color:#4a4a6a; }
+    .auth-footer a { color:var(--primary); text-decoration:none; font-weight:600; }
+
+    /* ----- DASHBOARD ----- */
+    .dashboard-main { padding:32px 0; }
+    .stats-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:16px; margin-bottom:32px; }
+    .stat-card { padding:20px 24px; display:flex; align-items:center; gap:16px; }
+    .stat-icon { width:48px; height:48px; border-radius:12px; background:rgba(107,63,160,0.08); display:flex; align-items:center; justify-content:center; font-size:20px; color:var(--primary); }
+    .stat-value { font-size:22px; font-weight:700; color:#1a1a2e; display:block; }
+    .stat-label { font-size:13px; color:#4a4a6a; }
+    .dashboard-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:32px; }
+    .recent-orders, .recommendations { padding:24px; }
+    .recent-orders h3, .recommendations h3 { font-size:16px; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+    .recent-orders h3 i { color:var(--primary); }
+    .order-list { display:flex; flex-direction:column; gap:12px; }
+    .order-item { display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(107,63,160,0.06); }
+    .order-info { display:flex; flex-direction:column; }
+    .order-id { font-weight:600; font-size:13px; }
+    .order-date { font-size:11px; color:#8a8a9e; }
+    .order-status { font-size:11px; font-weight:600; padding:2px 12px; border-radius:50px; }
+    .order-status.delivered { background:#d4edda; color:#155724; }
+    .order-status.shipped { background:#cce5ff; color:#004085; }
+    .order-status.pending { background:#fff3cd; color:#856404; }
+    .order-amount { font-weight:600; font-size:14px; }
+    .view-all-orders { display:inline-block; margin-top:12px; color:var(--primary); text-decoration:none; font-size:13px; font-weight:500; }
+    .rec-list { display:flex; flex-direction:column; gap:12px; }
+    .rec-item { display:flex; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid rgba(107,63,160,0.06); }
+    .rec-img { width:48px; height:48px; border-radius:8px; background:#ede9f7; flex-shrink:0; }
+    .rec-name { font-size:14px; font-weight:500; }
+    .rec-price { font-size:14px; font-weight:600; color:var(--primary); }
+    .rec-add { margin-left:auto; width:32px; height:32px; border-radius:50%; border:1px solid rgba(107,63,160,0.2); background:transparent; color:var(--primary); cursor:pointer; transition:var(--transition); display:flex; align-items:center; justify-content:center; }
+    .rec-add:hover { background:var(--primary); color:#fff; border-color:var(--primary); }
+    .analytics-card { padding:24px; }
+    .analytics-card h3 { font-size:16px; display:flex; align-items:center; gap:8px; }
+    .analytics-card h3 i { color:var(--primary); }
+    .analytics-placeholder { margin-top:16px; }
+    .analytics-placeholder p { font-size:13px; color:#4a4a6a; margin-bottom:12px; }
+    .chart-placeholder { display:flex; justify-content:space-between; padding:20px 0; }
+    .chart-placeholder span { font-size:12px; color:#8a8a9e; }
+    .notification-link { position:relative; color:#4a4a6a; font-size:18px; transition:var(--transition); }
+    .notification-link:hover { color:var(--primary); }
+    .notification-dot { position:absolute; top:-6px; right:-6px; background:#e74c3c; color:#fff; font-size:9px; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; }
+    .btn-logout { background:none; border:none; color:#4a4a6a; font-size:18px; cursor:pointer; transition:var(--transition); }
+    .btn-logout:hover { color:#e74c3c; }
+
+    /* ----- TOAST ----- */
+    .toast { position:fixed; bottom:24px; right:24px; padding:12px 24px; border-radius:12px; color:#fff; font-weight:500; z-index:9999; animation:slideUp 0.3s ease; box-shadow:0 8px 24px rgba(0,0,0,0.15); }
+    .toast-success { background:#6b3fa0; }
+    .toast-error { background:#e74c3c; }
+    .toast-warning { background:#f39c12; }
+    @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+    /* ----- RESPONSIVE ----- */
+    @media (max-width:1024px) {
+      .hero-section .container { flex-direction:column; gap:40px; }
+      .hero-quick-order { flex:1; width:100%; max-width:400px; }
+      .cta-card { grid-template-columns:1fr; padding:30px; }
+    }
+    @media (max-width:768px) {
+      .main-nav { display:none; }
+      .hero-content h1 { font-size:32px; }
+      .hero-features { flex-wrap:wrap; gap:12px; }
+      .dashboard-grid { grid-template-columns:1fr; }
+      .stats-grid { grid-template-columns:1fr 1fr; }
+      .cta-features { grid-template-columns:1fr 1fr; }
+    }
+    @media (max-width:480px) {
+      .auth-card { padding:28px 20px; }
+      .form-row { grid-template-columns:1fr; }
+      .stats-grid { grid-template-columns:1fr; }
+      .products-grid { grid-template-columns:1fr 1fr; }
+      .cta-features { grid-template-columns:1fr; }
+    }
   </style>
 </head>
 <body>
 
-<!-- ===== APP SHELL ===== -->
-<div id="app" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-
-  <!-- HEADER / NAV -->
-  <header class="flex flex-wrap items-center justify-between py-3 border-b border-gray-200/70">
-    <div class="flex items-center gap-2">
-      <i class="fas fa-circle text-brand-purple text-2xl"></i>
-      <span class="text-2xl font-bold text-charcoal tracking-tight">Magadh<span class="text-brand-purple">Tyres</span></span>
-      <span class="ml-2 text-xs bg-brand-purple text-white px-2 py-0.5 rounded-full">dealer</span>
+<!-- ================================================================
+     PAGE: HOME (index)
+     ================================================================ -->
+<header class="main-header">
+  <div class="container">
+    <div class="logo">
+      <i class="fas fa-circle"></i>
+      <span>Magadh<span>Tyres</span></span>
+      <span class="badge-b2b">B2B</span>
     </div>
-    <nav class="flex flex-wrap items-center gap-4 text-sm font-medium text-gray-600">
-      <a href="#" data-page="home" class="nav-link active">Home</a>
-      <a href="#" data-page="products" class="nav-link">Products</a>
-      <a href="#" data-page="quick-order" class="nav-link"><i class="fas fa-bolt mr-1 text-accent-gold"></i>Quick Order</a>
-      <a href="#" data-page="quick-payment" class="nav-link"><i class="fas fa-coins mr-1 text-accent-gold"></i>Quick Payment</a>
-      <a href="#" data-page="cart" class="nav-link"><i class="fas fa-shopping-cart"></i> <span class="bg-brand-purple text-white text-xs rounded-full px-1.5 py-0.5 ml-1">3</span></a>
-      <a href="#" data-page="profile" class="nav-link"><i class="fas fa-user-circle"></i></a>
+    <nav class="main-nav">
+      <a href="#" class="active" data-page="home">Home</a>
+      <a href="#" data-page="products">Products</a>
+      <a href="#" data-page="dashboard">Dashboard</a>
+      <a href="#" data-page="about">About</a>
+      <a href="#" data-page="contact">Contact</a>
     </nav>
-  </header>
+    <div class="header-actions">
+      <button class="search-toggle"><i class="fas fa-search"></i></button>
+      <a href="#" class="cart-link" data-page="cart"><i class="fas fa-shopping-cart"></i><span class="cart-count">3</span></a>
+      <a href="#" class="btn-signin" data-page="login">Sign In</a>
+    </div>
+  </div>
+</header>
 
-  <!-- ===== PAGES ===== -->
-  <main class="mt-6">
+<!-- ===== PAGE CONTAINER ===== -->
+<div id="pageContainer">
 
-    <!-- HOME -->
-    <section id="page-home" class="page active">
-      <!-- hero -->
-      <div class="relative rounded-2xl overflow-hidden bg-gradient-to-r from-[#2D0B4E] to-[#4A1A8A] text-white p-8 md:p-12 mb-8 shadow-2xl">
-        <div class="relative z-10 max-w-2xl">
-          <span class="inline-block bg-accent-gold/20 text-accent-gold text-xs font-semibold px-3 py-1 rounded-full mb-3"><i class="fas fa-truck mr-1"></i> fleet · commercial</span>
-          <h1 class="text-4xl md:text-6xl font-bold leading-tight">Premium tyres, <br>dealer-first.</h1>
-          <p class="text-white/80 text-lg mt-3 max-w-lg">Bulk ordering, instant payments, and real‑time inventory — built for tyre dealers.</p>
-          <div class="flex flex-wrap gap-4 mt-6">
-            <a href="#" data-page="quick-order" class="bg-accent-gold hover:bg-[#C28E2E] text-charcoal font-semibold px-6 py-3 rounded-xl shadow-lg transition flex items-center gap-2"><i class="fas fa-bolt"></i> Quick Order</a>
-            <a href="#" data-page="quick-payment" class="bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-xl transition flex items-center gap-2"><i class="fas fa-credit-card"></i> Pay Now</a>
+  <!-- ===== HOME PAGE ===== -->
+  <div id="page-home">
+    <!-- Hero -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-content">
+          <span class="hero-badge">🚀 B2B Dealer Platform</span>
+          <h1>Premium <span>Tyre</span> Supply <br>for Dealers &amp; Distributors</h1>
+          <p>Bulk ordering, dealer pricing, GST invoices, and real-time inventory – built for Indian tyre businesses.</p>
+          <div class="hero-actions">
+            <a href="#" class="btn-primary" data-page="products"><i class="fas fa-store"></i> Dealer Zone</a>
+            <a href="#" class="btn-secondary" data-page="checkout"><i class="fas fa-file-invoice"></i> Request Quote</a>
+          </div>
+          <div class="hero-features">
+            <span><i class="fas fa-check-circle"></i> GST B2B invoices</span>
+            <span><i class="fas fa-truck"></i> Pan-India delivery</span>
+            <span><i class="fas fa-shield-alt"></i> Dealer protection</span>
           </div>
         </div>
-        <div class="absolute right-0 top-0 opacity-20 md:opacity-40 text-9xl"><i class="fas fa-truck"></i></div>
-      </div>
-
-      <!-- Premium Products showcase (home) -->
-      <h2 class="text-2xl font-bold text-charcoal flex items-center gap-2"><i class="fas fa-star text-accent-gold"></i> Premium Products</h2>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-5 mt-4">
-        <!-- card 1 -->
-        <div class="glass-card rounded-2xl p-4 product-card transition cursor-default">
-          <div class="h-24 flex items-center justify-center bg-white/60 rounded-xl"><i class="fas fa-circle text-6xl text-brand-purple/30"></i></div>
-          <h4 class="font-bold text-charcoal mt-2">X-Trail A/T</h4>
-          <div class="flex justify-between text-sm"><span class="text-brand-purple font-semibold">₹8,450</span><span class="text-green-600"><i class="fas fa-check-circle"></i> in stock</span></div>
-          <div class="flex text-accent-gold text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> 4.8</div>
+        <div class="hero-quick-order">
+          <div class="quick-order-card glass-card">
+            <div class="card-header">
+              <i class="fas fa-user-circle"></i>
+              <div><p class="font-semibold">Dealer quick order</p><span class="text-xs text-gray-500">enter tyre size / SKU</span></div>
+            </div>
+            <div class="card-body">
+              <input type="text" placeholder="e.g. 205/55R16" class="form-input" id="quickSku">
+              <button class="btn-add-order" id="quickAddBtn"><i class="fas fa-cart-plus"></i>Add to bulk order</button>
+            </div>
+            <p class="text-center text-xs text-gray-400 mt-3">Dealer pricing shown after login</p>
+          </div>
         </div>
-        <div class="glass-card rounded-2xl p-4 product-card transition cursor-default">
-          <div class="h-24 flex items-center justify-center bg-white/60 rounded-xl"><i class="fas fa-circle text-6xl text-brand-purple/30"></i></div>
-          <h4 class="font-bold text-charcoal mt-2">SteelMax HD</h4>
-          <div class="flex justify-between text-sm"><span class="text-brand-purple font-semibold">₹12,200</span><span class="text-amber-600"><i class="fas fa-clock"></i> low stock</span></div>
-          <div class="flex text-accent-gold text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> 5.0</div>
-        </div>
-        <div class="glass-card rounded-2xl p-4 product-card transition cursor-default">
-          <div class="h-24 flex items-center justify-center bg-white/60 rounded-xl"><i class="fas fa-circle text-6xl text-brand-purple/30"></i></div>
-          <h4 class="font-bold text-charcoal mt-2">EcoDrive EV</h4>
-          <div class="flex justify-between text-sm"><span class="text-brand-purple font-semibold">₹9,990</span><span class="text-green-600"><i class="fas fa-check-circle"></i> in stock</span></div>
-          <div class="flex text-accent-gold text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> 4.9</div>
-        </div>
-        <div class="glass-card rounded-2xl p-4 product-card transition cursor-default">
-          <div class="h-24 flex items-center justify-center bg-white/60 rounded-xl"><i class="fas fa-circle text-6xl text-brand-purple/30"></i></div>
-          <h4 class="font-bold text-charcoal mt-2">HaulMaster R</h4>
-          <div class="flex justify-between text-sm"><span class="text-brand-purple font-semibold">₹15,400</span><span class="text-green-600"><i class="fas fa-check-circle"></i> in stock</span></div>
-          <div class="flex text-accent-gold text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> 4.7</div>
-        </div>
-      </div>
-
-      <!-- trust + testimonials -->
-      <div class="grid md:grid-cols-3 gap-5 mt-8">
-        <div class="glass-card rounded-2xl p-5"><i class="fas fa-shield-alt text-3xl text-brand-purple"></i><h4 class="font-bold">Genuine OEM</h4><p class="text-sm text-gray-600">100% authentic tyres</p></div>
-        <div class="glass-card rounded-2xl p-5"><i class="fas fa-warehouse text-3xl text-brand-purple"></i><h4 class="font-bold">Pan-India stock</h4><p class="text-sm text-gray-600">real-time inventory</p></div>
-        <div class="glass-card rounded-2xl p-5"><i class="fas fa-headset text-3xl text-brand-purple"></i><h4 class="font-bold">Dealer support</h4><p class="text-sm text-gray-600">24/7 dedicated team</p></div>
       </div>
     </section>
 
-    <!-- PRODUCTS -->
-    <section id="page-products" class="page">
-      <div class="flex flex-wrap gap-3 items-center justify-between">
-        <h2 class="text-2xl font-bold text-charcoal">All Products</h2>
-        <div class="flex gap-2">
-          <input type="text" placeholder="SKU or size..." class="border border-gray-200 rounded-xl px-4 py-2 text-sm w-48 glass">
-          <button class="bg-brand-purple text-white px-4 py-2 rounded-xl text-sm"><i class="fas fa-search"></i></button>
+    <!-- Categories -->
+    <section class="categories-section">
+      <div class="container">
+        <div class="section-header">
+          <h2><i class="fas fa-th-large"></i> Shop by vehicle</h2>
+          <a href="#" class="view-all" data-page="products">view all <i class="fas fa-arrow-right"></i></a>
         </div>
-      </div>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-5 mt-4">
-        <div class="glass-card p-4 rounded-2xl product-card"><h4 class="font-bold">X-Trail A/T</h4><span class="text-brand-purple font-semibold">₹8,450</span><span class="block text-xs text-green-600">in stock · SKU: MT-221</span></div>
-        <div class="glass-card p-4 rounded-2xl product-card"><h4 class="font-bold">SteelMax HD</h4><span class="text-brand-purple font-semibold">₹12,200</span><span class="block text-xs text-amber-600">low stock · SKU: MT-453</span></div>
-        <div class="glass-card p-4 rounded-2xl product-card"><h4 class="font-bold">EcoDrive EV</h4><span class="text-brand-purple font-semibold">₹9,990</span><span class="block text-xs text-green-600">in stock · SKU: MT-892</span></div>
-        <div class="glass-card p-4 rounded-2xl product-card"><h4 class="font-bold">HaulMaster R</h4><span class="text-brand-purple font-semibold">₹15,400</span><span class="block text-xs text-green-600">in stock · SKU: MT-774</span></div>
-        <div class="glass-card p-4 rounded-2xl product-card"><h4 class="font-bold">Rugged T/A</h4><span class="text-brand-purple font-semibold">₹7,250</span><span class="block text-xs text-green-600">in stock · SKU: MT-112</span></div>
-        <div class="glass-card p-4 rounded-2xl product-card"><h4 class="font-bold">CityDrive P</h4><span class="text-brand-purple font-semibold">₹6,800</span><span class="block text-xs text-green-600">in stock · SKU: MT-339</span></div>
+        <div class="categories-scroll">
+          <span class="category-badge"><i class="fas fa-car"></i> Passenger</span>
+          <span class="category-badge"><i class="fas fa-truck"></i> LCV</span>
+          <span class="category-badge"><i class="fas fa-bus"></i> Bus</span>
+          <span class="category-badge"><i class="fas fa-tractor"></i> Tractor</span>
+          <span class="category-badge"><i class="fas fa-motorcycle"></i> Two-wheeler</span>
+          <span class="category-badge"><i class="fas fa-truck-moving"></i> OTR</span>
+        </div>
       </div>
     </section>
 
-    <!-- QUICK ORDER -->
-    <section id="page-quick-order" class="page">
-      <h2 class="text-2xl font-bold text-charcoal"><i class="fas fa-bolt text-accent-gold"></i> Quick Order</h2>
-      <div class="grid md:grid-cols-3 gap-4 mt-4">
-        <div class="glass-card p-5 rounded-2xl col-span-2">
-          <div class="flex flex-wrap gap-2"><input placeholder="SKU / barcode" class="border rounded-xl px-4 py-2 flex-1"><input placeholder="Qty" class="w-20 border rounded-xl px-2 py-2"><button class="bg-brand-purple text-white px-4 py-2 rounded-xl"><i class="fas fa-plus"></i> Add</button></div>
-          <div class="mt-4 text-sm border-t pt-3"><span class="font-semibold">Current order:</span> X-Trail A/T (4) · SteelMax HD (2) </div>
-          <div class="mt-2"><span class="font-semibold">Subtotal:</span> ₹58,600 <span class="ml-4">GST (18%): ₹10,548</span> <span class="ml-4 font-bold text-brand-purple">Total: ₹69,148</span></div>
-          <button class="mt-3 bg-accent-gold hover:bg-[#C28E2E] text-charcoal font-bold px-6 py-2 rounded-xl"><i class="fas fa-check-circle"></i> Place Order</button>
+    <!-- Products -->
+    <section class="products-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>⚡ Popular Tyres</h2>
+          <div class="filter-tabs">
+            <button class="active" data-filter="all">All</button>
+            <button data-filter="truck">Truck</button>
+            <button data-filter="car">Car</button>
+          </div>
         </div>
-        <div class="glass-card p-5 rounded-2xl"><i class="fas fa-info-circle text-brand-purple"></i> <span class="font-semibold">Live inventory</span><div class="text-sm">X-Trail: 24 · SteelMax: 5 · EcoDrive: 18</div></div>
+        <div class="products-grid" id="productsGrid"></div>
       </div>
     </section>
 
-    <!-- QUICK PAYMENT -->
-    <section id="page-quick-payment" class="page">
-      <h2 class="text-2xl font-bold text-charcoal"><i class="fas fa-coins text-accent-gold"></i> Quick Payment</h2>
-      <div class="grid md:grid-cols-2 gap-4 mt-4">
-        <div class="glass-card p-5 rounded-2xl">
-          <label class="text-sm font-medium">Invoice #</label>
-          <input placeholder="INV-2026-001" class="w-full border rounded-xl px-4 py-2 mt-1">
-          <button class="mt-2 bg-brand-purple text-white px-4 py-2 rounded-xl"><i class="fas fa-search"></i> Search</button>
-          <div class="mt-3 text-sm"><span class="font-semibold">Invoice INV-2026-001</span>  ₹24,500 (partial)</div>
-          <button class="mt-2 bg-accent-gold px-4 py-2 rounded-xl text-charcoal font-semibold"><i class="fas fa-credit-card"></i> Pay now</button>
-          <div class="mt-2 flex gap-2 text-xs"><span class="bg-gray-100 px-2 py-1 rounded">UPI</span><span class="bg-gray-100 px-2 py-1 rounded">Net Banking</span><span class="bg-gray-100 px-2 py-1 rounded">Card</span></div>
+    <!-- CTA -->
+    <section class="quick-order-cta">
+      <div class="container">
+        <div class="cta-card glass-card">
+          <div class="cta-content">
+            <span class="cta-badge"><i class="fas fa-rocket"></i> Bulk order</span>
+            <h3>Dealer quick order <br><span>with GST invoice</span></h3>
+            <p>Upload CSV or enter SKU list. Get dealer pricing &amp; stock availability.</p>
+            <a href="#" class="btn-primary" data-page="checkout"><i class="fas fa-file-upload"></i>Start bulk order</a>
+          </div>
+          <div class="cta-features">
+            <div class="feature-item"><i class="fas fa-warehouse"></i><span>Live inventory</span></div>
+            <div class="feature-item"><i class="fas fa-percent"></i><span>Dealer discount</span></div>
+            <div class="feature-item"><i class="fas fa-file-invoice"></i><span>GST invoice</span></div>
+            <div class="feature-item"><i class="fas fa-truck-fast"></i><span>Track order</span></div>
+          </div>
         </div>
-        <div class="glass-card p-5 rounded-2xl"><i class="fas fa-receipt text-brand-purple"></i> <span class="font-semibold">Recent invoices</span><div class="text-sm">INV-2026-001 · ₹24,500<br>INV-2026-002 · ₹12,800</div></div>
       </div>
     </section>
 
-    <!-- CART (dummy) -->
-    <section id="page-cart" class="page"><h2 class="text-2xl font-bold"><i class="fas fa-shopping-cart"></i> Cart</h2><div class="glass-card p-5 rounded-2xl mt-4">X-Trail A/T (2) · ₹16,900<br>EcoDrive EV (1) · ₹9,990 <br><span class="font-bold">Total: ₹26,890</span> <button class="ml-4 bg-brand-purple text-white px-4 py-1 rounded-xl">Checkout</button></div></section>
-    <!-- PROFILE (dummy) -->
-    <section id="page-profile" class="page"><h2 class="text-2xl font-bold"><i class="fas fa-user-circle"></i> Dealer Profile</h2><div class="glass-card p-5 rounded-2xl mt-4">Magadh Tyres · Dealer ID: MT-0041 ·  credit: ₹1,20,000</div></section>
-    <!-- other pages (placeholders) -->
-    <section id="page-checkout" class="page"><h2 class="text-2xl font-bold">Checkout</h2><div class="glass-card p-5 rounded-2xl">checkout simulation</div></section>
-    <section id="page-history" class="page"><h2 class="text-2xl font-bold">Order History</h2><div class="glass-card p-5 rounded-2xl">INV-2026-001, INV-2026-002</div></section>
-    <section id="page-wishlist" class="page"><h2 class="text-2xl font-bold">Wishlist</h2><div class="glass-card p-5 rounded-2xl">SteelMax HD, HaulMaster R</div></section>
-    <section id="page-notifications" class="page"><h2 class="text-2xl font-bold">Notifications</h2><div class="glass-card p-5 rounded-2xl">Stock alert: SteelMax HD low</div></section>
-    <section id="page-login" class="page"><h2 class="text-2xl font-bold">Login</h2><div class="glass-card p-5 rounded-2xl max-w-sm"><input placeholder="email" class="w-full border rounded-xl px-4 py-2"><input placeholder="password" type="password" class="w-full border rounded-xl px-4 py-2 mt-2"><button class="w-full bg-brand-purple text-white py-2 rounded-xl mt-2">Sign in</button></div></section>
-    <section id="page-register" class="page"><h2 class="text-2xl font-bold">Dealer Registration</h2><div class="glass-card p-5 rounded-2xl">registration form</div></section>
-    <section id="page-forgot" class="page"><h2 class="text-2xl font-bold">Forgot Password</h2><div class="glass-card p-5 rounded-2xl">reset link</div></section>
-    <section id="page-about" class="page"><h2 class="text-2xl font-bold">About Magadh Tyres</h2><div class="glass-card p-5 rounded-2xl">trusted since 1998</div></section>
-    <section id="page-contact" class="page"><h2 class="text-2xl font-bold">Contact</h2><div class="glass-card p-5 rounded-2xl">+91-800-123-4567</div></section>
-    <section id="page-terms" class="page"><h2 class="text-2xl font-bold">Terms & Conditions</h2><div class="glass-card p-5 rounded-2xl">standard terms</div></section>
-    <section id="page-privacy" class="page"><h2 class="text-2xl font-bold">Privacy Policy</h2><div class="glass-card p-5 rounded-2xl">data protection</div></section>
-  </main>
+    <!-- Knowledge -->
+    <section class="knowledge-section">
+      <div class="container">
+        <h2><i class="fas fa-newspaper"></i> Knowledge hub</h2>
+        <div class="knowledge-grid">
+          <div class="knowledge-card glass-card"><i class="fas fa-tire"></i><h4>Tyre load index guide</h4><p>Understand load capacity for trucks</p></div>
+          <div class="knowledge-card glass-card"><i class="fas fa-chart-line"></i><h4>Dealer pricing strategy</h4><p>Maximise margins with bulk buying</p></div>
+          <div class="knowledge-card glass-card"><i class="fas fa-calendar-check"></i><h4>Seasonal tyre care</h4><p>Prepare your fleet for monsoon</p></div>
+        </div>
+      </div>
+    </section>
+  </div>
 
-  <!-- FOOTER -->
-  <footer class="mt-12 border-t border-gray-200/70 pt-6 text-sm text-gray-500 flex flex-wrap justify-between">
-    <span>© 2026 Magadh Tyres · dealer portal</span>
-    <span class="flex gap-4"><a href="#" data-page="about" class="hover:text-brand-purple">About</a><a href="#" data-page="contact" class="hover:text-brand-purple">Contact</a><a href="#" data-page="terms" class="hover:text-brand-purple">Terms</a><a href="#" data-page="privacy" class="hover:text-brand-purple">Privacy</a></span>
-  </footer>
-</div>
+  <!-- ===== PAGE: LOGIN ===== -->
+  <div id="page-login" style="display:none;" class="auth-page">
+    <div class="auth-container">
+      <div class="auth-card glass-card">
+        <div class="auth-header">
+          <a href="#" class="auth-logo" data-page="home"><i class="fas fa-circle"></i><span>Magadh<span>Tyres</span></span></a>
+          <h2>Welcome Back</h2>
+          <p>Sign in to your dealer account</p>
+        </div>
+        <form id="loginForm" class="auth-form">
+          <div class="form-group"><label><i class="fas fa-envelope"></i> Email Address</label><input type="email" id="loginEmail" placeholder="dealer@company.com" required></div>
+          <div class="form-group"><label><i class="fas fa-lock"></i> Password</label><input type="password" id="loginPassword" placeholder="Enter your password" required></div>
+          <div class="form-options">
+            <label class="checkbox-label"><input type="checkbox"> Remember me</label>
+            <a href="#" class="forgot-link" data-page="forgot-password">Forgot password?</a>
+          </div>
+          <button type="submit" class="btn-auth">Sign In <i class="fas fa-arrow-right"></i></button>
+        </form>
+        <div class="auth-footer"><p>Don't have an account? <a href="#" data-page="signup">Register as Dealer</a></p></div>
+      </div>
+    </div>
+  </div>
 
-<!-- ===== ROUTER ===== -->
+  <!-- ===== PAGE: SIGNUP ===== -->
+  <div id="page-signup" style="display:none;" class="auth-page">
+    <div class="auth-container">
+      <div class="auth-card glass-card">
+        <div class="auth-header">
+          <a href="#" class="auth-logo" data-page="home"><i class="fas fa-circle"></i><span>Magadh<span>Tyres</span></span></a>
+          <h2>Dealer Registration</h2>
+          <p>Join India's premier B2B tyre platform</p>
+        </div>
+        <form id="signupForm" class="auth-form">
+          <div class="form-row">
+            <div class="form-group"><label><i class="fas fa-user"></i> Company Name</label><input type="text" id="signupCompany" placeholder="Your Company" required></div>
+            <div class="form-group"><label><i class="fas fa-id-card"></i> GST Number</label><input type="text" id="signupGst" placeholder="22AAAAA0000A1Z5"></div>
+          </div>
+          <div class="form-group"><label><i class="fas fa-envelope"></i> Business Email</label><input type="email" id="signupEmail" placeholder="contact@company.com" required></div>
+          <div class="form-group"><label><i class="fas fa-phone"></i> Phone</label><input type="tel" id="signupPhone" placeholder="+91 98765 43210" required></div>
+          <div class="form-group"><label><i class="fas fa-lock"></i> Password</label><input type="password" id="signupPassword" placeholder="Min 8 characters" required></div>
+          <div class="form-group"><label><i class="fas fa-check-circle"></i> Confirm Password</label><input type="password" id="signupConfirm" placeholder="Re-enter password" required></div>
+          <div class="form-options"><label class="checkbox-label"><input type="checkbox" required> I agree to the <a href="#" data-page="terms">Terms &amp; Conditions</a></label></div>
+          <button type="submit" class="btn-auth">Register as Dealer <i class="fas fa-user-plus"></i></button>
+        </form>
+        <div class="auth-footer"><p>Already registered? <a href="#" data-page="login">Sign In</a></p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE: FORGOT PASSWORD ===== -->
+  <div id="page-forgot-password" style="display:none;" class="auth-page">
+    <div class="auth-container">
+      <div class="auth-card glass-card">
+        <div class="auth-header">
+          <a href="#" class="auth-logo" data-page="home"><i class="fas fa-circle"></i><span>Magadh<span>Tyres</span></span></a>
+          <h2>Reset Password</h2>
+          <p>Enter your email to receive reset instructions</p>
+        </div>
+        <form id="forgotForm" class="auth-form">
+          <div class="form-group"><label><i class="fas fa-envelope"></i> Email Address</label><input type="email" id="forgotEmail" placeholder="dealer@company.com" required></div>
+          <button type="submit" class="btn-auth">Send Reset Link <i class="fas fa-paper-plane"></i></button>
+        </form>
+        <div class="auth-footer"><p><a href="#" data-page="login">Back to Sign In</a></p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE: DASHBOARD ===== -->
+  <div id="page-dashboard" style="display:none;">
+    <main class="dashboard-main">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-card glass-card"><div class="stat-icon"><i class="fas fa-shopping-bag"></i></div><div class="stat-info"><span class="stat-value">24</span><span class="stat-label">Total Orders</span></div></div>
+          <div class="stat-card glass-card"><div class="stat-icon"><i class="fas fa-rupee-sign"></i></div><div class="stat-info"><span class="stat-value">₹4,52,890</span><span class="stat-label">Total Spent</span></div></div>
+          <div class="stat-card glass-card"><div class="stat-icon"><i class="fas fa-truck"></i></div><div class="stat-info"><span class="stat-value">3</span><span class="stat-label">Active Orders</span></div></div>
+          <div class="stat-card glass-card"><div class="stat-icon"><i class="fas fa-heart"></i></div><div class="stat-info"><span class="stat-value">12</span><span class="stat-label">Wishlist Items</span></div></div>
+        </div>
+        <div class="dashboard-grid">
+          <div class="recent-orders glass-card">
+            <h3><i class="fas fa-clock"></i> Recent Orders</h3>
+            <div class="order-list">
+              <div class="order-item"><div class="order-info"><span class="order-id">#ORD-2026-0042</span><span class="order-date">21 Jul 2026</span></div><span class="order-status delivered">Delivered</span><span class="order-amount">₹12,450</span></div>
+              <div class="order-item"><div class="order-info"><span class="order-id">#ORD-2026-0038</span><span class="order-date">18 Jul 2026</span></div><span class="order-status shipped">Shipped</span><span class="order-amount">₹8,200</span></div>
+              <div class="order-item"><div class="order-info"><span class="order-id">#ORD-2026-0035</span><span class="order-date">15 Jul 2026</span></div><span class="order-status pending">Pending</span><span class="order-amount">₹23,750</span></div>
+            </div>
+            <a href="#" class="view-all-orders" data-page="orders">View All Orders →</a>
+          </div>
+          <div class="recommendations glass-card">
+            <h3><i class="fas fa-star"></i> Recommended for You</h3>
+            <div class="rec-list">
+              <div class="rec-item"><div class="rec-img"></div><div><p class="rec-name">Apollo Alnac 4G</p><span class="rec-price">₹4,890</span></div><button class="rec-add"><i class="fas fa-plus"></i></button></div>
+              <div class="rec-item"><div class="rec-img"></div><div><p class="rec-name">MRF Wanderer</p><span class="rec-price">₹5,250</span></div><button class="rec-add"><i class="fas fa-plus"></i></button></div>
+            </div>
+          </div>
+        </div>
+        <div class="analytics-card glass-card">
+          <h3><i class="fas fa-chart-bar"></i> Spending Analytics</h3>
+          <div class="analytics-placeholder"><p>Monthly spending trend (Last 6 months)</p><div class="chart-placeholder"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span></div></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ===== PAGE: CART ===== -->
+  <div id="page-cart" style="display:none; padding:40px 0;">
+    <div class="container">
+      <h2 class="text-2xl font-bold mb-6"><i class="fas fa-shopping-cart text-purple-600"></i> Your Cart</h2>
+      <div class="glass-card p-6">
+        <div class="cart-item flex justify-between items-center border-b py-4"><div><span class="font-semibold">Apollo Alnac 4G</span><p class="text-sm text-gray-500">205/55R16</p></div><div><span class="font-bold text-purple-700">₹4,890</span> <span class="mx-4">x2</span> <button class="text-red-500"><i class="fas fa-trash"></i></button></div></div>
+        <div class="cart-item flex justify-between items-center border-b py-4"><div><span class="font-semibold">MRF Wanderer</span><p class="text-sm text-gray-500">215/60R16</p></div><div><span class="font-bold text-purple-700">₹5,250</span> <span class="mx-4">x1</span> <button class="text-red-500"><i class="fas fa-trash"></i></button></div></div>
+        <div class="flex justify-between items-center mt-6 pt-4 border-t"><span class="text-xl font-bold">Total: ₹14,130</span><a href="#" class="btn-primary" data-page="checkout">Proceed to Checkout <i class="fas fa-arrow-right"></i></a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE: CHECKOUT ===== -->
+  <div id="page-checkout" style="display:none; padding:40px 0;">
+    <div class="container max-w-3xl">
+      <h2 class="text-2xl font-bold mb-6"><i class="fas fa-file-invoice text-purple-600"></i> Checkout</h2>
+      <div class="glass-card p-6">
+        <form id="checkoutForm">
+          <h4 class="font-semibold mb-3">Shipping Address</h4>
+          <div class="grid grid-cols-2 gap-4">
+            <input type="text" placeholder="Company Name" class="form-input" required>
+            <input type="text" placeholder="GST Number" class="form-input">
+          </div>
+          <input type="text" placeholder="Address Line 1" class="form-input mt-3" required>
+          <div class="grid grid-cols-3 gap-3 mt-3">
+            <input type="text" placeholder="City" class="form-input" required>
+            <input type="text" placeholder="State" class="form-input" required>
+            <input type="text" placeholder="Pincode" class="form-input" required>
+          </div>
+          <button type="submit" class="btn-primary w-full mt-4 justify-center">Place Order <i class="fas fa-check"></i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE: ORDERS ===== -->
+  <div id="page-orders" style="display:none; padding:40px 0;">
+    <div class="container">
+      <h2 class="text-2xl font-bold mb-6"><i class="fas fa-list text-purple-600"></i> Order History</h2>
+      <div class="glass-card p-6">
+        <div class="order-item flex justify-between items-center border-b py-4"><div><span class="font-semibold">#ORD-2026-0042</span><p class="text-sm text-gray-500">21 Jul 2026 · 3 items</p></div><span class="order-status delivered">Delivered</span><span class="font-bold">₹12,450</span><a href="#" class="text-purple-600 text-sm">Invoice</a></div>
+        <div class="order-item flex justify-between items-center border-b py-4"><div><span class="font-semibold">#ORD-2026-0038</span><p class="text-sm text-gray-500">18 Jul 2026 · 2 items</p></div><span class="order-status shipped">Shipped</span><span class="font-bold">₹8,200</span><a href="#" class="text-purple-600 text-sm">Track</a></div>
+        <div class="order-item flex justify-between items-center py-4"><div><span class="font-semibold">#ORD-2026-0035</span><p class="text-sm text-gray-500">15 Jul 2026 · 5 items</p></div><span class="order-status pending">Pending</span><span class="font-bold">₹23,750</span><a href="#" class="text-purple-600 text-sm">Cancel</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE: PROFILE ===== -->
+  <div id="page-profile" style="display:none; padding:40px 0;">
+    <div class="container max-w-2xl">
+      <h2 class="text-2xl font-bold mb-6"><i class="fas fa-user-circle text-purple-600"></i> Dealer Profile</h2>
+      <div class="glass-card p-6">
+        <form id="profileForm">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="form-group"><label>Company Name</label><input type="text" value="Magadh Distributors" class="form-input"></div>
+            <div class="form-group"><label>GST Number</label><input type="text" value="22AAAAA0000A1Z5" class="form-input"></div>
+          </div>
+          <div class="form-group mt-3"><label>Business Email</label><input type="email" value="dealer@magadh.com" class="form-input"></div>
+          <div class="form-group mt-3"><label>Phone</label><input type="tel" value="+91 98765 43210" class="form-input"></div>
+          <button type="submit" class="btn-primary mt-4">Update Profile</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE: WISHLIST ===== -->
+  <div id="page-wishlist" style="display:none; padding:40px 0;">
+    <div class="container">
+      <h2 class="text-2xl font-bold mb-6"><i class="fas fa-heart text-purple-600"></i> Wishlist</h2>
+      <div class="products-grid">
+        <div class="product-card glass-card"><div class="product-img"><i class="fas fa-circle"></i></div><h3>Apollo Alnac 4G</h3><p class="sku">205/55R16</p><div class="product-price"><span class="price">₹4,890</span><span class="dealer-badge">dealer</span></div><button class="btn-quick-add"><i class="fas fa-cart-plus"></i> Add to cart</button></div>
+        <div class="product-card glass-card"><div class="product-img"><i class="fas fa-circle"></i></div><h3>CEAT Milaze X3</h3><p class="sku">185/65R14</p><div class="product-price"><span class="price">₹3,670</span><span class="dealer-badge">dealer</span></div><button class="btn-quick-add"><i class="fas fa-cart-plus"></i> Add to cart</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE: NOTIFICATIONS ===== -->
+  <div id="page-notifications" style="display:none; padding:40px 0;">
+    <div class="container max-w-2xl">
+      <h2 class="text-2xl font-bold mb-6"><i class="fas fa-bell text-purple-600"></i> Notifications</h2>
+      <div class="glass-card p-4"><i class="fas fa-check-circle text-green-500"></i> Order #ORD-2026-0042 delivered successfully <span class="text-xs text-gray-400 float-right">2h ago</span></div>
+      <div class="glass-card p-4 mt-3"><i class="fas fa-truck text-blue-500"></i> Order #ORD-2026-0038 has been shipped <span class="text-xs text-gray-400 float-right">1d ago</span></div>
+      <div class="glass-card p-4 mt-3"><i class="fas fa-tag text-yellow-500"></i> New dealer discount on Apollo tyres <span class="text-xs text-gray-400 float-right">3d ago</span></div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE: ABOUT ===== -->
+  <div id="page-about" style="display:none; padding:40px 0;">
+    <div class="container max-w-3xl">
+      <h2 class="text-2xl font-bold mb-6"><i class="fas fa-info-circle text-purple-600"></i> About Magadh Tyres</h2>
+      <div class="glass-card p-6"><p class="text-gray-700">Magadh Tyres is India's premier B2B tyre distribution platform, connecting tyre manufacturers with dealers and fleet operators. We provide real-time inventory, dealer-specific pricing, GST-compliant invoicing, and seamless bulk ordering.</p></div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE: CONTACT ===== -->
+  <div id="page-contact" style="display:none; padding:40px 0;">
+    <div class="container max-w-2xl">
+      <h2 class="text-2xl font-bold mb-6"><i class="fas fa-envelope text-purple-600"></i> Contact Us</h2>
+      <div class="glass-card p-6">
+        <form id="contactForm">
+          <div class="form-group"><label>Your Email</label><input type="email" class="form-input" placeholder="dealer@company.com" required></div>
+          <div class="form-group mt-3"><label>Subject</label><input type="text" class="form-input" placeholder="Order inquiry" required></div>
+          <div class="form-group mt-3"><label>Message</label><textarea rows="4" class="form-input" placeholder="Describe your query..." style="border-radius:12px;"></textarea></div>
+          <button type="submit" class="btn-primary mt-4">Send Message <i class="fas fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE: TERMS ===== -->
+  <div id="page-terms" style="display:none; padding:40px 0;">
+    <div class="container max-w-3xl">
+      <h2 class="text-2xl font-bold mb-6"><i class="fas fa-file-contract text-purple-600"></i> Terms &amp; Conditions</h2>
+      <div class="glass-card p-6"><p class="text-gray-700">By registering as a dealer on Magadh Tyres, you agree to our terms of service. All transactions are B2B and subject to GST regulations. Dealer pricing is confidential and non-transferable.</p></div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE: PRIVACY ===== -->
+  <div id="page-privacy" style="display:none; padding:40px 0;">
+    <div class="container max-w-3xl">
+      <h2 class="text-2xl font-bold mb-6"><i class="fas fa-shield-alt text-purple-600"></i> Privacy Policy</h2>
+      <div class="glass-card p-6"><p class="text-gray-700">We protect your business data with enterprise-grade security. Your information is used only for order processing and dealer communications.</p></div>
+    </div>
+  </div>
+
+</div><!-- /pageContainer -->
+
+<!-- ===== FOOTER ===== -->
+<footer class="main-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><h5>Magadh Tyres</h5><p class="text-gray-500">B2B tyre supply for dealers &amp; fleets. GST &amp; bulk order ready.</p></div>
+      <div><h6>Products</h6><ul><li><a href="#" data-page="products">Car</a></li><li><a href="#" data-page="products">Truck</a></li><li><a href="#" data-page="products">OTR</a></li><li><a href="#" data-page="products">Two-wheeler</a></li></ul></div>
+      <div><h6>Dealer</h6><ul><li><a href="#" data-page="signup">Register</a></li><li><a href="#" data-page="dashboard">Pricing</a></li><li><a href="#" data-page="checkout">Bulk order</a></li><li><a href="#" data-page="orders">Invoice</a></li></ul></div>
+      <div><h6>Support</h6><ul><li><a href="#" data-page="contact">Contact</a></li><li><a href="#" data-page="knowledge">Knowledge</a></li><li><a href="#" data-page="orders">Track order</a></li><li><a href="#" data-page="privacy">Privacy</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Magadh Tyres · B2B platform</span>
+      <span><i class="fab fa-aws"></i> AWS serverless</span>
+      <span><i class="fas fa-shield-alt"></i> Cognito auth</span>
+      <span><i class="fas fa-database"></i> DynamoDB</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ================================================================
+     CONSOLIDATED JAVASCRIPT
+     ================================================================ -->
 <script>
-  (function() {
-    const pages = document.querySelectorAll('.page');
-    const navLinks = document.querySelectorAll('[data-page]');
+  /* ================================================================
+     MAGADH TYRES · CONSOLIDATED APP
+     Includes: Config, Auth, API, Router, Products, Cart, etc.
+     ================================================================ */
 
-    function showPage(pageId) {
-      pages.forEach(p => p.classList.remove('active'));
-      const target = document.getElementById('page-' + pageId);
-      if (target) target.classList.add('active');
-      navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.dataset.page === pageId) link.classList.add('active');
-      });
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  // ----- CONFIG -----
+  const CONFIG = {
+    region: 'ap-south-1',
+    cognito: { userPoolId: 'YOUR_COGNITO_USER_POOL_ID', appClientId: 'YOUR_COGNITO_APP_CLIENT_ID' },
+    api: { baseUrl: 'https://api.magadhtyres.com/prod' },
+    s3: { bucket: 'magadh-assets', cdnUrl: 'https://d1x3x3x3x3x3x3.cloudfront.net' },
+    app: { name: 'Magadh Tyres', version: '1.0.0', environment: 'production' }
+  };
+
+  // ----- AUTH SERVICE -----
+  class AuthService {
+    constructor() {
+      this.token = localStorage.getItem('authToken') || null;
+      this.user = JSON.parse(localStorage.getItem('userData')) || null;
+      this.isAuthenticated = !!this.token;
     }
+    async signIn(email, password) {
+      // Simulate API call
+      if (email && password) {
+        this.token = 'mock-jwt-token';
+        this.user = { email, companyName: 'Magadh Distributors', role: 'dealer' };
+        this.isAuthenticated = true;
+        localStorage.setItem('authToken', this.token);
+        localStorage.setItem('userData', JSON.stringify(this.user));
+        return { success: true, user: this.user };
+      }
+      throw new Error('Invalid credentials');
+    }
+    signOut() {
+      this.token = null; this.user = null; this.isAuthenticated = false;
+      localStorage.removeItem('authToken'); localStorage.removeItem('userData');
+      window.location.hash = '#home';
+    }
+    getToken() { return this.token; }
+    getCurrentUser() { return this.user; }
+    isLoggedIn() { return this.isAuthenticated; }
+  }
 
-    navLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
+  // ----- API SERVICE -----
+  class ApiService {
+    constructor() { this.baseUrl = CONFIG.api.baseUrl; }
+    async request(endpoint, options = {}) {
+      const token = authService.getToken();
+      const headers = { 'Content-Type': 'application/json', ...options.headers };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+      const res = await fetch(`${this.baseUrl}${endpoint}`, { ...options, headers });
+      if (!res.ok) { const err = await res.json(); throw new Error(err.message || 'API error'); }
+      return res.json();
+    }
+    async getProducts() {
+      // Mock data
+      return [
+        { id:1, name:'Apollo Alnac 4G', sku:'205/55R16', price:4890 },
+        { id:2, name:'MRF Wanderer', sku:'215/60R16', price:5250 },
+        { id:3, name:'Bridgestone Dueler', sku:'225/65R17', price:7120 },
+        { id:4, name:'CEAT Milaze X3', sku:'185/65R14', price:3670 }
+      ];
+    }
+    async addToCart(productId) { return { success:true }; }
+  }
+
+  // ----- INSTANTIATE SERVICES -----
+  const authService = new AuthService();
+  const apiService = new ApiService();
+
+  // ----- ROUTER (SPA navigation) -----
+  const pages = {
+    home: 'page-home',
+    login: 'page-login',
+    signup: 'page-signup',
+    'forgot-password': 'page-forgot-password',
+    dashboard: 'page-dashboard',
+    products: 'page-home', // products are on home page
+    cart: 'page-cart',
+    checkout: 'page-checkout',
+    orders: 'page-orders',
+    profile: 'page-profile',
+    wishlist: 'page-wishlist',
+    notifications: 'page-notifications',
+    about: 'page-about',
+    contact: 'page-contact',
+    terms: 'page-terms',
+    privacy: 'page-privacy',
+    'product-details': 'page-home'
+  };
+
+  function navigateTo(page) {
+    // Hide all pages
+    document.querySelectorAll('[id^="page-"]').forEach(el => el.style.display = 'none');
+    const target = pages[page] || 'page-home';
+    const el = document.getElementById(target);
+    if (el) el.style.display = '';
+    // Update nav active state
+    document.querySelectorAll('.main-nav a').forEach(a => a.classList.remove('active'));
+    const navLink = document.querySelector(`.main-nav a[data-page="${page}"]`);
+    if (navLink) navLink.classList.add('active');
+    // Update sign in button
+    const signBtn = document.querySelector('.btn-signin');
+    if (authService.isLoggedIn()) {
+      signBtn.textContent = authService.getCurrentUser()?.companyName || 'Account';
+      signBtn.dataset.page = 'dashboard';
+    } else {
+      signBtn.textContent = 'Sign In';
+      signBtn.dataset.page = 'login';
+    }
+    window.location.hash = page;
+  }
+
+  // ----- TOAST -----
+  function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => { toast.style.opacity='0'; toast.style.transform='translateY(20px)'; setTimeout(()=>toast.remove(),300); }, 3000);
+  }
+
+  // ----- RENDER PRODUCTS -----
+  async function renderProducts() {
+    const grid = document.getElementById('productsGrid');
+    if (!grid) return;
+    try {
+      const products = await apiService.getProducts();
+      grid.innerHTML = products.map(p => `
+        <div class="product-card glass-card">
+          <div class="product-img"><i class="fas fa-circle"></i></div>
+          <h3>${p.name}</h3>
+          <p class="sku">${p.sku}</p>
+          <div class="product-price"><span class="price">₹${p.price}</span><span class="dealer-badge">dealer</span></div>
+          <button class="btn-quick-add" data-id="${p.id}"><i class="fas fa-cart-plus"></i> Quick add</button>
+        </div>
+      `).join('');
+      // Bind quick add
+      grid.querySelectorAll('.btn-quick-add').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          if (!authService.isLoggedIn()) { showToast('Please sign in first', 'warning'); navigateTo('login'); return; }
+          await apiService.addToCart(btn.dataset.id);
+          showToast('Added to cart!', 'success');
+        });
+      });
+    } catch(e) { console.error(e); }
+  }
+
+  // ----- EVENT BINDING -----
+  document.addEventListener('DOMContentLoaded', function() {
+    // Navigation clicks
+    document.querySelectorAll('[data-page]').forEach(el => {
+      el.addEventListener('click', (e) => {
         e.preventDefault();
-        const page = link.dataset.page;
-        if (page) showPage(page);
+        const page = el.dataset.page;
+        if (page === 'logout') { authService.signOut(); return; }
+        navigateTo(page);
       });
     });
 
-    // default home
-    showPage('home');
-  })();
-</script>
+    // Login form
+    document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const pass = document.getElementById('loginPassword').value;
+      try {
+        await authService.signIn(email, pass);
+        showToast('Welcome back!', 'success');
+        navigateTo('dashboard');
+      } catch(err) { showToast(err.message, 'error'); }
+    });
 
-<!-- Toast notification (demo) -->
-<div class="fixed bottom-6 right-6 bg-charcoal text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 glass" style="backdrop-filter:blur(8px); background: rgba(30,41,59,0.8);">
-  <i class="fas fa-check-circle text-accent-gold"></i> <span>Welcome, dealer · ready to order?</span>
-</div>
+    // Signup form
+    document.getElementById('signupForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const pwd = document.getElementById('signupPassword').value;
+      const confirm = document.getElementById('signupConfirm').value;
+      if (pwd !== confirm) { showToast('Passwords do not match', 'error'); return; }
+      showToast('Registration successful! Please verify your email.', 'success');
+      navigateTo('login');
+    });
+
+    // Forgot password
+    document.getElementById('forgotForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      showToast('Reset link sent to your email', 'success');
+      navigateTo('login');
+    });
+
+    // Quick add from hero
+    document.getElementById('quickAddBtn')?.addEventListener('click', () => {
+      const sku = document.getElementById('quickSku').value;
+      if (!sku) { showToast('Please enter a tyre size or SKU', 'warning'); return; }
+      if (!authService.isLoggedIn()) { showToast('Please sign in first', 'warning'); navigateTo('login'); return; }
+      showToast(`Added ${sku} to bulk order`, 'success');
+    });
+
+    // Logout button
+    document.querySelector('.btn-logout')?.addEventListener('click', () => authService.signOut());
+
+    // Render products
+    renderProducts();
+
+    // Handle hash on load
+    const hash = window.location.hash.replace('#', '') || 'home';
+    navigateTo(hash);
+  });
+
+  // Expose for debugging
+  window.app = { CONFIG, authService, apiService, navigateTo, showToast };
+</script>
 </body>
 </html>
