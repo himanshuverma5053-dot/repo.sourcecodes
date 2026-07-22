@@ -233,11 +233,16 @@
   })();
 </script>
   
-// ----- CONFIG.js -----
-    cognito : {
-    region : 'us-EAST-1',
-    cognito : userPoolId: 'us-east-1_VKZn9Dc4v', appClientId: '26ibua8ee0mvj0sm42c0qr3tou'
-  },
+window._config = {
+    cognito: {
+        userPoolId: 'us-east-1_VKZn9Dc4v', // e.g. us-east-2_uXbo65pAb
+        userPoolClientId: '26ibua8ee0mvj0sm42c0qr3tou', // e.g. 25ddkmj4v6hfsfvruhpfi7n4hv
+        region: 'us-east-1' // e.g. us-east-1
+    },
+    api: {
+        invokeUrl: '' // e.g. https://rc7nyt4tql.execute-api.us-west-2.amazonaws.com/prod',
+    }
+};
   
 <!-- Toast notification (demo) -->
 <div class="fixed bottom-6 right-6 bg-charcoal text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 glass" style="backdrop-filter:blur(8px); background: rgba(30,41,59,0.8);">
