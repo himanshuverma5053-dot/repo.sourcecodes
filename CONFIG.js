@@ -2,10 +2,10 @@
 // CONFIGURATION
 
 export const CONFIG = {
-    region: 'ap-south-1',
+    region: 'us-east-1',
     cognito: {
-        userPoolId: 'us-east-1_FSZpv6nvK',
-        appClientId: '6i0mpg2bh7bl11r7fqhjhl55dl'
+        userPoolId: 'us-east-1_OXQHQpp6l',
+        appClientId: '33a2k9ek2kfolldnj99l6gdb3k'
     },
     api: {
         baseUrl: 'https://api.magadhtyres.com/prod'
