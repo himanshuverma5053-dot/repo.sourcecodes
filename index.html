@@ -312,22 +312,21 @@
 <script>
   // Navigation function - simulates page navigation with alert
  function navigateToPage(page) {
-
     const pageNames = {
-        home: "Home",
-        about: "About",
-        services: "Services",
-        profile: "My Profile",
-        contact: "Contact"
+      'home': 'Homepage',
+      'products': 'Products Page',
+      'orders': 'My Orders (Order History)',
+      'account': 'My Account (Payment Transaction History & Partial Payment Balance)',
+      'reports': 'My Reports (Invoice PDF Generation)',
+      'profile': 'My Profile',
+      'contact': 'Contact Us'
     };
-
+    
     const pageTitle = pageNames[page] || page;
-
-    // Redirect to Amazon Cognito Hosted UI when "Profile" is clicked
-    if (page === "profile") {
-        window.location.href =
-            "https://us-east-1oxqhqpp6l.auth.us-east-1.amazoncognito.com/login?client_id=33a2k9ek2kfolldnj99l6gdb3k&response_type=code&scope=openid+email+profile&redirect_uri=https://main.d2nohaf3qzlcar.amplifyapp.com";
-        return;
+    alert(`Navigating to: ${pageTitle}\n\nThis is a demo. In production, this would load the actual page.`);
+    
+    // Update active state in navigation (visual feedback)
+    updateActiveNav(page);
     }
 
     // Demo navigation for other pages
