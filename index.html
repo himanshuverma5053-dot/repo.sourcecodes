@@ -311,7 +311,7 @@
 
 <script>
   // Navigation function - simulates page navigation with alert
- function navigateToPage(page) {
+  function navigateTo(page) {
     const pageNames = {
       'home': 'Homepage',
       'products': 'Products Page',
@@ -327,19 +327,6 @@
     
     // Update active state in navigation (visual feedback)
     updateActiveNav(page);
-    }
-
-    // Demo navigation for other pages
-    alert(`Navigating to: ${pageTitle}
-
-This is a demo. In production, this would load the actual page.`);
-
-    updateActiveNav(page);
-
-    if (window.event) {
-        window.event.preventDefault();
-    }
-}
     
     // Prevent default anchor behavior
     event.preventDefault();
