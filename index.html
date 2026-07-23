@@ -2,251 +2,400 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
-  <title>Magadh Tyres · Dealer Portal</title>
-  <!-- Tailwind + Font Awesome (CDN) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>Magadhtyres | B2B tyre platform</title>
+  <!-- Tailwind via CDN + custom layer -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome 6 for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- Google Font (Inter) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
   <style>
-    * { font-family: 'Inter', sans-serif; }
-    body { background: #f8fafc; }
-    /* glassmorphism utility */
-    .glass {
-      background: rgba(255,255,255,0.5);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.25);
+    /* smooth scroll & custom accent overrides */
+    body {
+      background: #f8fafc;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
-    .glass-card {
-      background: rgba(255,255,255,0.6);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.4);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+    .purple-accent {
+      accent-color: #7c3aed;
     }
-    .brand-purple { color: #4A1A8A; }
-    .bg-brand-purple { background-color: #4A1A8A; }
-    .border-brand-purple { border-color: #4A1A8A; }
-    .hover\:bg-brand-purple:hover { background-color: #3E1580; }
-    .accent-gold { color: #D4A13E; }
-    .bg-accent-gold { background-color: #D4A13E; }
-    .hover\:bg-accent-gold:hover { background-color: #C28E2E; }
-    .text-charcoal { color: #1E293B; }
-    .bg-charcoal { background-color: #1E293B; }
-    /* transitions */
-    .page { display: none; animation: fadeIn 0.3s ease; }
-    .page.active { display: block; }
-    @keyframes fadeIn { 0% { opacity:0; transform: translateY(8px); } 100% { opacity:1; transform: translateY(0); } }
-    .product-card:hover { transform: scale(1.01); box-shadow: 0 20px 40px -12px rgba(74,26,138,0.2); }
-    .nav-link { transition: 0.2s; border-bottom: 2px solid transparent; }
-    .nav-link:hover, .nav-link.active { border-bottom-color: #D4A13E; color: #4A1A8A; }
-    /* scroll */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #f1f5f9; }
-    ::-webkit-scrollbar-thumb { background: #4A1A8A; border-radius: 8px; }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px -5px rgba(124, 58, 237, 0.15), 0 8px 10px -6px rgba(124, 58, 237, 0.1);
+      transition: all 0.25s ease;
+    }
+    .slider-track::-webkit-scrollbar {
+      display: none;
+    }
+    .slider-track {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .gradient-purple {
+      background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+    }
+    /* sticky header */
+    header.sticky {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      background-color: rgba(255,255,255,0.9);
+    }
+    @media (max-width: 768px) {
+      .desktop-only {
+        display: none;
+      }
+    }
+    @media (min-width: 768px) {
+      .mobile-only {
+        display: none;
+      }
+    }
+    /* Clickable elements cursor */
+    button, a, [onclick] {
+      cursor: pointer;
+    }
+    button:active, a:active {
+      transform: scale(0.97);
+      transition: transform 0.1s;
+    }
   </style>
 </head>
-<body>
+<body class="text-gray-800 antialiased">
 
-<!-- ===== APP SHELL ===== -->
-<div id="app" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-
-  <!-- HEADER / NAV -->
-  <header class="flex flex-wrap items-center justify-between py-3 border-b border-gray-200/70">
-    <div class="flex items-center gap-2">
-      <i class="fas fa-circle text-brand-purple text-2xl"></i>
-      <span class="text-2xl font-bold text-charcoal tracking-tight">Magadh<span class="text-brand-purple">Tyres</span></span>
-      <span class="ml-2 text-xs bg-brand-purple text-white px-2 py-0.5 rounded-full">dealer</span>
+<!-- Sticky header -->
+<header class="sticky shadow-sm border-b border-purple-100">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <!-- Logo & brand - clickable -->
+    <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('home')">
+      <div class="w-9 h-9 bg-purple-700 rounded-lg flex items-center justify-center text-white font-bold text-xl">M</div>
+      <span class="font-bold text-xl tracking-tight text-gray-900">Magadhtyres<span class="text-purple-700">.</span></span>
     </div>
-    <nav class="flex flex-wrap items-center gap-4 text-sm font-medium text-gray-600">
-      <a href="#" data-page="home" class="nav-link active">Home</a>
-      <a href="#" data-page="products" class="nav-link">Products</a>
-      <a href="#" data-page="quick-order" class="nav-link"><i class="fas fa-bolt mr-1 text-accent-gold"></i>Quick Order</a>
-      <a href="#" data-page="quick-payment" class="nav-link"><i class="fas fa-coins mr-1 text-accent-gold"></i>Quick Payment</a>
-      <a href="#" data-page="cart" class="nav-link"><i class="fas fa-shopping-cart"></i> <span class="bg-brand-purple text-white text-xs rounded-full px-1.5 py-0.5 ml-1">3</span></a>
-      <a href="#" data-page="profile" class="nav-link"><i class="fas fa-user-circle"></i></a>
+    <!-- Desktop nav links -->
+    <nav class="desktop-only flex items-center space-x-6 text-sm font-medium text-gray-700">
+      <a href="#" onclick="navigateTo('home')" class="hover:text-purple-700 transition flex items-center gap-1"><i class="fas fa-home text-purple-600"></i> Home</a>
+      <a href="#" onclick="navigateTo('products')" class="hover:text-purple-700 transition flex items-center gap-1"><i class="fas fa-box"></i> Products</a>
+      <a href="#" onclick="navigateTo('orders')" class="hover:text-purple-700 transition flex items-center gap-1"><i class="fas fa-receipt"></i> Orders</a>
+      <a href="#" onclick="navigateTo('reports')" class="hover:text-purple-700 transition flex items-center gap-1"><i class="fas fa-file-invoice"></i> Reports</a>
+      <a href="#" onclick="navigateTo('profile')" class="hover:text-purple-700 transition flex items-center gap-1"><i class="fas fa-user-circle"></i> Profile</a>
+      <a href="#" onclick="navigateTo('contact')" class="hover:text-purple-700 transition flex items-center gap-1"><i class="fas fa-headset"></i> Contact</a>
     </nav>
-  </header>
-
-  <!-- ===== PAGES ===== -->
-  <main class="mt-6">
-
-    <!-- HOME -->
-    <section id="page-home" class="page active">
-      <!-- hero -->
-      <div class="relative rounded-2xl overflow-hidden bg-gradient-to-r from-[#2D0B4E] to-[#4A1A8A] text-white p-8 md:p-12 mb-8 shadow-2xl">
-        <div class="relative z-10 max-w-2xl">
-          <span class="inline-block bg-accent-gold/20 text-accent-gold text-xs font-semibold px-3 py-1 rounded-full mb-3"><i class="fas fa-truck mr-1"></i> fleet · commercial</span>
-          <h1 class="text-4xl md:text-6xl font-bold leading-tight">Premium tyres, <br>dealer-first.</h1>
-          <p class="text-white/80 text-lg mt-3 max-w-lg">Bulk ordering, instant payments, and real‑time inventory — built for tyre dealers.</p>
-          <div class="flex flex-wrap gap-4 mt-6">
-            <a href="#" data-page="quick-order" class="bg-accent-gold hover:bg-[#C28E2E] text-charcoal font-semibold px-6 py-3 rounded-xl shadow-lg transition flex items-center gap-2"><i class="fas fa-bolt"></i> Quick Order</a>
-            <a href="#" data-page="quick-payment" class="bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-xl transition flex items-center gap-2"><i class="fas fa-credit-card"></i> Pay Now</a>
-          </div>
-        </div>
-        <div class="absolute right-0 top-0 opacity-20 md:opacity-40 text-9xl"><i class="fas fa-truck"></i></div>
+    <!-- mobile menu trigger & account pill -->
+    <div class="flex items-center gap-3">
+      <div class="desktop-only flex items-center gap-2 bg-purple-50 px-3 py-1.5 rounded-full cursor-pointer" onclick="navigateTo('account')">
+        <i class="fas fa-wallet text-purple-700"></i>
+        <span class="text-sm font-semibold text-purple-800">₹ 2,45,800</span>
       </div>
+      <button class="mobile-only text-gray-700 text-2xl" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
+      <div class="w-8 h-8 rounded-full bg-purple-200 flex items-center justify-center text-purple-800 desktop-only cursor-pointer" onclick="navigateTo('profile')"><i class="fas fa-user"></i></div>
+    </div>
+  </div>
+  <!-- Mobile menu dropdown (hidden by default) -->
+  <div id="mobileMenu" class="mobile-only hidden bg-white border-t border-gray-100 px-4 py-3 space-y-3">
+    <a href="#" onclick="navigateTo('home')" class="block py-2 text-gray-700 font-medium"><i class="fas fa-home mr-2 text-purple-600"></i>Home</a>
+    <a href="#" onclick="navigateTo('products')" class="block py-2 text-gray-700 font-medium"><i class="fas fa-box mr-2"></i>Products</a>
+    <a href="#" onclick="navigateTo('orders')" class="block py-2 text-gray-700 font-medium"><i class="fas fa-receipt mr-2"></i>Orders</a>
+    <a href="#" onclick="navigateTo('reports')" class="block py-2 text-gray-700 font-medium"><i class="fas fa-file-invoice mr-2"></i>Reports</a>
+    <a href="#" onclick="navigateTo('profile')" class="block py-2 text-gray-700 font-medium"><i class="fas fa-user-circle mr-2"></i>Profile</a>
+    <a href="#" onclick="navigateTo('contact')" class="block py-2 text-gray-700 font-medium"><i class="fas fa-headset mr-2"></i>Contact</a>
+    <a href="#" onclick="navigateTo('account')" class="block py-2 text-gray-700 font-medium"><i class="fas fa-wallet mr-2"></i>Account</a>
+  </div>
+</header>
 
-      <!-- Premium Products showcase (home) -->
-      <h2 class="text-2xl font-bold text-charcoal flex items-center gap-2"><i class="fas fa-star text-accent-gold"></i> Premium Products</h2>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-5 mt-4">
-        <!-- card 1 -->
-        <div class="glass-card rounded-2xl p-4 product-card transition cursor-default">
-          <div class="h-24 flex items-center justify-center bg-white/60 rounded-xl"><i class="fas fa-circle text-6xl text-brand-purple/30"></i></div>
-          <h4 class="font-bold text-charcoal mt-2">X-Trail A/T</h4>
-          <div class="flex justify-between text-sm"><span class="text-brand-purple font-semibold">₹8,450</span><span class="text-green-600"><i class="fas fa-check-circle"></i> in stock</span></div>
-          <div class="flex text-accent-gold text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> 4.8</div>
-        </div>
-        <div class="glass-card rounded-2xl p-4 product-card transition cursor-default">
-          <div class="h-24 flex items-center justify-center bg-white/60 rounded-xl"><i class="fas fa-circle text-6xl text-brand-purple/30"></i></div>
-          <h4 class="font-bold text-charcoal mt-2">SteelMax HD</h4>
-          <div class="flex justify-between text-sm"><span class="text-brand-purple font-semibold">₹12,200</span><span class="text-amber-600"><i class="fas fa-clock"></i> low stock</span></div>
-          <div class="flex text-accent-gold text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> 5.0</div>
-        </div>
-        <div class="glass-card rounded-2xl p-4 product-card transition cursor-default">
-          <div class="h-24 flex items-center justify-center bg-white/60 rounded-xl"><i class="fas fa-circle text-6xl text-brand-purple/30"></i></div>
-          <h4 class="font-bold text-charcoal mt-2">EcoDrive EV</h4>
-          <div class="flex justify-between text-sm"><span class="text-brand-purple font-semibold">₹9,990</span><span class="text-green-600"><i class="fas fa-check-circle"></i> in stock</span></div>
-          <div class="flex text-accent-gold text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> 4.9</div>
-        </div>
-        <div class="glass-card rounded-2xl p-4 product-card transition cursor-default">
-          <div class="h-24 flex items-center justify-center bg-white/60 rounded-xl"><i class="fas fa-circle text-6xl text-brand-purple/30"></i></div>
-          <h4 class="font-bold text-charcoal mt-2">HaulMaster R</h4>
-          <div class="flex justify-between text-sm"><span class="text-brand-purple font-semibold">₹15,400</span><span class="text-green-600"><i class="fas fa-check-circle"></i> in stock</span></div>
-          <div class="flex text-accent-gold text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> 4.7</div>
+<!-- Main content area -->
+<main class="max-w-7xl mx-auto px-4 py-6 space-y-8">
+  
+  <!-- Financial Overview statistics section (dashboard cards) -->
+  <section>
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-xl font-bold text-gray-800"><i class="fas fa-chart-pie text-purple-600 mr-2"></i>Financial Overview</h2>
+      <span class="text-xs bg-purple-100 text-purple-700 px-3 py-1 rounded-full cursor-pointer" onclick="showAlert('Financial period filter clicked')">This month</span>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 card-hover cursor-pointer" onclick="navigateTo('account')">
+        <div class="text-gray-500 text-xs uppercase tracking-wide">Total due</div>
+        <div class="text-2xl font-bold text-gray-900 mt-1">₹4,82,300</div>
+        <div class="text-xs text-purple-600 flex items-center gap-1 mt-2"><i class="fas fa-arrow-up"></i> 8% vs last month</div>
+      </div>
+      <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 card-hover cursor-pointer" onclick="navigateTo('account')">
+        <div class="text-gray-500 text-xs uppercase tracking-wide">Paid (MTD)</div>
+        <div class="text-2xl font-bold text-gray-900 mt-1">₹2,15,900</div>
+        <div class="text-xs text-green-600 flex items-center gap-1 mt-2"><i class="fas fa-check-circle"></i> on track</div>
+      </div>
+      <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 card-hover cursor-pointer" onclick="navigateTo('account')">
+        <div class="text-gray-500 text-xs uppercase tracking-wide">Partial balance</div>
+        <div class="text-2xl font-bold text-gray-900 mt-1">₹1,26,400</div>
+        <div class="text-xs text-amber-600 flex items-center gap-1 mt-2"><i class="fas fa-exclamation-triangle"></i> 3 pending</div>
+      </div>
+      <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 card-hover cursor-pointer" onclick="showAlert('Credit limit details')">
+        <div class="text-gray-500 text-xs uppercase tracking-wide">Credit limit</div>
+        <div class="text-2xl font-bold text-gray-900 mt-1">₹10,00,000</div>
+        <div class="text-xs text-purple-600 flex items-center gap-1 mt-2"><i class="fas fa-shield-alt"></i> available</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hero image slider (horizontal scroll cards) -->
+  <section>
+    <div class="flex items-center gap-3 mb-3">
+      <h2 class="text-lg font-bold text-gray-800"><i class="fas fa-star text-purple-500"></i> Featured tyres</h2>
+    </div>
+    <div class="slider-track flex space-x-4 overflow-x-auto pb-4">
+      <div class="min-w-[280px] md:min-w-[400px] rounded-2xl bg-gradient-to-br from-purple-700 to-purple-500 text-white p-5 flex-shrink-0 shadow-lg relative overflow-hidden cursor-pointer" onclick="navigateTo('products')">
+        <span class="bg-white/20 text-xs px-2 py-0.5 rounded-full">Premium</span>
+        <h3 class="text-2xl font-bold mt-3">Radial X Pro</h3>
+        <p class="text-sm opacity-90 mt-1">Heavy duty truck tyre</p>
+        <div class="mt-4 flex justify-between items-end">
+          <span class="text-3xl font-bold">₹24,500</span>
+          <i class="fas fa-truck text-4xl opacity-30"></i>
         </div>
       </div>
-
-      <!-- trust + testimonials -->
-      <div class="grid md:grid-cols-3 gap-5 mt-8">
-        <div class="glass-card rounded-2xl p-5"><i class="fas fa-shield-alt text-3xl text-brand-purple"></i><h4 class="font-bold">Genuine OEM</h4><p class="text-sm text-gray-600">100% authentic tyres</p></div>
-        <div class="glass-card rounded-2xl p-5"><i class="fas fa-warehouse text-3xl text-brand-purple"></i><h4 class="font-bold">Pan-India stock</h4><p class="text-sm text-gray-600">real-time inventory</p></div>
-        <div class="glass-card rounded-2xl p-5"><i class="fas fa-headset text-3xl text-brand-purple"></i><h4 class="font-bold">Dealer support</h4><p class="text-sm text-gray-600">24/7 dedicated team</p></div>
-      </div>
-    </section>
-
-    <!-- PRODUCTS -->
-    <section id="page-products" class="page">
-      <div class="flex flex-wrap gap-3 items-center justify-between">
-        <h2 class="text-2xl font-bold text-charcoal">All Products</h2>
-        <div class="flex gap-2">
-          <input type="text" placeholder="SKU or size..." class="border border-gray-200 rounded-xl px-4 py-2 text-sm w-48 glass">
-          <button class="bg-brand-purple text-white px-4 py-2 rounded-xl text-sm"><i class="fas fa-search"></i></button>
+      <div class="min-w-[280px] md:min-w-[400px] rounded-2xl bg-gray-900 text-white p-5 flex-shrink-0 shadow-lg relative overflow-hidden cursor-pointer" onclick="navigateTo('products')">
+        <span class="bg-purple-400/30 text-xs px-2 py-0.5 rounded-full">New arrival</span>
+        <h3 class="text-2xl font-bold mt-3">City Glide</h3>
+        <p class="text-sm opacity-90 mt-1">Commercial van tyre</p>
+        <div class="mt-4 flex justify-between items-end">
+          <span class="text-3xl font-bold">₹12,800</span>
+          <i class="fas fa-car text-4xl opacity-30"></i>
         </div>
       </div>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-5 mt-4">
-        <div class="glass-card p-4 rounded-2xl product-card"><h4 class="font-bold">X-Trail A/T</h4><span class="text-brand-purple font-semibold">₹8,450</span><span class="block text-xs text-green-600">in stock · SKU: MT-221</span></div>
-        <div class="glass-card p-4 rounded-2xl product-card"><h4 class="font-bold">SteelMax HD</h4><span class="text-brand-purple font-semibold">₹12,200</span><span class="block text-xs text-amber-600">low stock · SKU: MT-453</span></div>
-        <div class="glass-card p-4 rounded-2xl product-card"><h4 class="font-bold">EcoDrive EV</h4><span class="text-brand-purple font-semibold">₹9,990</span><span class="block text-xs text-green-600">in stock · SKU: MT-892</span></div>
-        <div class="glass-card p-4 rounded-2xl product-card"><h4 class="font-bold">HaulMaster R</h4><span class="text-brand-purple font-semibold">₹15,400</span><span class="block text-xs text-green-600">in stock · SKU: MT-774</span></div>
-        <div class="glass-card p-4 rounded-2xl product-card"><h4 class="font-bold">Rugged T/A</h4><span class="text-brand-purple font-semibold">₹7,250</span><span class="block text-xs text-green-600">in stock · SKU: MT-112</span></div>
-        <div class="glass-card p-4 rounded-2xl product-card"><h4 class="font-bold">CityDrive P</h4><span class="text-brand-purple font-semibold">₹6,800</span><span class="block text-xs text-green-600">in stock · SKU: MT-339</span></div>
-      </div>
-    </section>
-
-    <!-- QUICK ORDER -->
-    <section id="page-quick-order" class="page">
-      <h2 class="text-2xl font-bold text-charcoal"><i class="fas fa-bolt text-accent-gold"></i> Quick Order</h2>
-      <div class="grid md:grid-cols-3 gap-4 mt-4">
-        <div class="glass-card p-5 rounded-2xl col-span-2">
-          <div class="flex flex-wrap gap-2"><input placeholder="SKU / barcode" class="border rounded-xl px-4 py-2 flex-1"><input placeholder="Qty" class="w-20 border rounded-xl px-2 py-2"><button class="bg-brand-purple text-white px-4 py-2 rounded-xl"><i class="fas fa-plus"></i> Add</button></div>
-          <div class="mt-4 text-sm border-t pt-3"><span class="font-semibold">Current order:</span> X-Trail A/T (4) · SteelMax HD (2) </div>
-          <div class="mt-2"><span class="font-semibold">Subtotal:</span> ₹58,600 <span class="ml-4">GST (18%): ₹10,548</span> <span class="ml-4 font-bold text-brand-purple">Total: ₹69,148</span></div>
-          <button class="mt-3 bg-accent-gold hover:bg-[#C28E2E] text-charcoal font-bold px-6 py-2 rounded-xl"><i class="fas fa-check-circle"></i> Place Order</button>
+      <div class="min-w-[280px] md:min-w-[400px] rounded-2xl bg-purple-100 text-gray-900 p-5 flex-shrink-0 shadow-sm border border-purple-200 cursor-pointer" onclick="navigateTo('products')">
+        <span class="bg-purple-200 text-purple-800 text-xs px-2 py-0.5 rounded-full">Bestseller</span>
+        <h3 class="text-2xl font-bold mt-3">Terrain T/A</h3>
+        <p class="text-sm text-gray-600 mt-1">All-terrain SUV</p>
+        <div class="mt-4 flex justify-between items-end">
+          <span class="text-3xl font-bold text-purple-700">₹18,200</span>
+          <i class="fas fa-mountain text-4xl text-purple-300"></i>
         </div>
-        <div class="glass-card p-5 rounded-2xl"><i class="fas fa-info-circle text-brand-purple"></i> <span class="font-semibold">Live inventory</span><div class="text-sm">X-Trail: 24 · SteelMax: 5 · EcoDrive: 18</div></div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- QUICK PAYMENT -->
-    <section id="page-quick-payment" class="page">
-      <h2 class="text-2xl font-bold text-charcoal"><i class="fas fa-coins text-accent-gold"></i> Quick Payment</h2>
-      <div class="grid md:grid-cols-2 gap-4 mt-4">
-        <div class="glass-card p-5 rounded-2xl">
-          <label class="text-sm font-medium">Invoice #</label>
-          <input placeholder="INV-2026-001" class="w-full border rounded-xl px-4 py-2 mt-1">
-          <button class="mt-2 bg-brand-purple text-white px-4 py-2 rounded-xl"><i class="fas fa-search"></i> Search</button>
-          <div class="mt-3 text-sm"><span class="font-semibold">Invoice INV-2026-001</span>  ₹24,500 (partial)</div>
-          <button class="mt-2 bg-accent-gold px-4 py-2 rounded-xl text-charcoal font-semibold"><i class="fas fa-credit-card"></i> Pay now</button>
-          <div class="mt-2 flex gap-2 text-xs"><span class="bg-gray-100 px-2 py-1 rounded">UPI</span><span class="bg-gray-100 px-2 py-1 rounded">Net Banking</span><span class="bg-gray-100 px-2 py-1 rounded">Card</span></div>
+  <!-- Horizontal product cards & trade offer cards (combined row) -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Product cards horizontal scroll -->
+    <div>
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="font-bold text-gray-800"><i class="fas fa-boxes text-purple-600"></i> Quick order products</h3>
+        <a href="#" onclick="navigateTo('products')" class="text-xs text-purple-700">View all</a>
+      </div>
+      <div class="slider-track flex space-x-3 overflow-x-auto pb-2">
+        <div class="bg-white min-w-[160px] rounded-xl p-3 shadow-sm border border-gray-100 flex-shrink-0 cursor-pointer card-hover" onclick="navigateTo('products')">
+          <div class="w-full h-20 bg-purple-50 rounded-lg flex items-center justify-center text-purple-400 text-2xl"><i class="fas fa-circle"></i></div>
+          <p class="text-sm font-semibold mt-2">Truck 12R22.5</p>
+          <p class="text-xs text-purple-700 font-bold">₹22,400</p>
         </div>
-        <div class="glass-card p-5 rounded-2xl"><i class="fas fa-receipt text-brand-purple"></i> <span class="font-semibold">Recent invoices</span><div class="text-sm">INV-2026-001 · ₹24,500<br>INV-2026-002 · ₹12,800</div></div>
+        <div class="bg-white min-w-[160px] rounded-xl p-3 shadow-sm border border-gray-100 flex-shrink-0 cursor-pointer card-hover" onclick="navigateTo('products')">
+          <div class="w-full h-20 bg-purple-50 rounded-lg flex items-center justify-center text-purple-400 text-2xl"><i class="fas fa-circle"></i></div>
+          <p class="text-sm font-semibold mt-2">Bus 295/80R</p>
+          <p class="text-xs text-purple-700 font-bold">₹31,200</p>
+        </div>
+        <div class="bg-white min-w-[160px] rounded-xl p-3 shadow-sm border border-gray-100 flex-shrink-0 cursor-pointer card-hover" onclick="navigateTo('products')">
+          <div class="w-full h-20 bg-purple-50 rounded-lg flex items-center justify-center text-purple-400 text-2xl"><i class="fas fa-circle"></i></div>
+          <p class="text-sm font-semibold mt-2">LCV 215/75R</p>
+          <p class="text-xs text-purple-700 font-bold">₹14,900</p>
+        </div>
       </div>
-    </section>
+    </div>
+    <!-- Trade offer cards -->
+    <div>
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="font-bold text-gray-800"><i class="fas fa-tags text-purple-600"></i> Trade offers</h3>
+        <a href="#" onclick="showAlert('View all trade offers')" class="text-xs text-purple-700">2 active</a>
+      </div>
+      <div class="space-y-3">
+        <div class="bg-purple-50 p-3 rounded-xl flex items-center justify-between border border-purple-100 cursor-pointer card-hover" onclick="showAlert('Buy 4 get 1 free offer details')">
+          <div><span class="font-semibold text-gray-800">Buy 4 get 1 free</span><p class="text-xs text-gray-500">Radial range</p></div>
+          <span class="bg-purple-600 text-white text-xs px-3 py-1 rounded-full">active</span>
+        </div>
+        <div class="bg-white p-3 rounded-xl flex items-center justify-between border border-gray-200 shadow-sm cursor-pointer card-hover" onclick="showAlert('10% cashback offer details')">
+          <div><span class="font-semibold text-gray-800">10% cashback</span><p class="text-xs text-gray-500">On invoice > ₹50k</p></div>
+          <span class="bg-gray-200 text-gray-700 text-xs px-3 py-1 rounded-full">ends soon</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <!-- CART (dummy) -->
-    <section id="page-cart" class="page"><h2 class="text-2xl font-bold"><i class="fas fa-shopping-cart"></i> Cart</h2><div class="glass-card p-5 rounded-2xl mt-4">X-Trail A/T (2) · ₹16,900<br>EcoDrive EV (1) · ₹9,990 <br><span class="font-bold">Total: ₹26,890</span> <button class="ml-4 bg-brand-purple text-white px-4 py-1 rounded-xl">Checkout</button></div></section>
-    <!-- PROFILE (dummy) -->
-    <section id="page-profile" class="page"><h2 class="text-2xl font-bold"><i class="fas fa-user-circle"></i> Dealer Profile</h2><div class="glass-card p-5 rounded-2xl mt-4">Magadh Tyres · Dealer ID: MT-0041 ·  credit: ₹1,20,000</div></section>
-    <!-- other pages (placeholders) -->
-    <section id="page-checkout" class="page"><h2 class="text-2xl font-bold">Checkout</h2><div class="glass-card p-5 rounded-2xl">checkout simulation</div></section>
-    <section id="page-history" class="page"><h2 class="text-2xl font-bold">Order History</h2><div class="glass-card p-5 rounded-2xl">INV-2026-001, INV-2026-002</div></section>
-    <section id="page-wishlist" class="page"><h2 class="text-2xl font-bold">Wishlist</h2><div class="glass-card p-5 rounded-2xl">SteelMax HD, HaulMaster R</div></section>
-    <section id="page-notifications" class="page"><h2 class="text-2xl font-bold">Notifications</h2><div class="glass-card p-5 rounded-2xl">Stock alert: SteelMax HD low</div></section>
-    <section id="page-login" class="page"><h2 class="text-2xl font-bold">Login</h2><div class="glass-card p-5 rounded-2xl max-w-sm"><input placeholder="email" class="w-full border rounded-xl px-4 py-2"><input placeholder="password" type="password" class="w-full border rounded-xl px-4 py-2 mt-2"><button class="w-full bg-brand-purple text-white py-2 rounded-xl mt-2">Sign in</button></div></section>
-    <section id="page-register" class="page"><h2 class="text-2xl font-bold">Dealer Registration</h2><div class="glass-card p-5 rounded-2xl">registration form</div></section>
-    <section id="page-forgot" class="page"><h2 class="text-2xl font-bold">Forgot Password</h2><div class="glass-card p-5 rounded-2xl">reset link</div></section>
-    <section id="page-about" class="page"><h2 class="text-2xl font-bold">About Magadh Tyres</h2><div class="glass-card p-5 rounded-2xl">trusted since 1998</div></section>
-    <section id="page-contact" class="page"><h2 class="text-2xl font-bold">Contact</h2><div class="glass-card p-5 rounded-2xl">+91-800-123-4567</div></section>
-    <section id="page-terms" class="page"><h2 class="text-2xl font-bold">Terms & Conditions</h2><div class="glass-card p-5 rounded-2xl">standard terms</div></section>
-    <section id="page-privacy" class="page"><h2 class="text-2xl font-bold">Privacy Policy</h2><div class="glass-card p-5 rounded-2xl">data protection</div></section>
-  </main>
+  <!-- Shop categories grid -->
+  <section>
+    <h2 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2"><i class="fas fa-th-large text-purple-600"></i>Shop by category</h2>
+    <div class="grid grid-cols-3 md:grid-cols-6 gap-3">
+      <div class="bg-white p-3 rounded-xl text-center shadow-sm border border-gray-100 card-hover cursor-pointer" onclick="navigateTo('products')">
+        <i class="fas fa-truck text-2xl text-purple-600 mb-1"></i>
+        <p class="text-xs font-medium">Truck</p>
+      </div>
+      <div class="bg-white p-3 rounded-xl text-center shadow-sm border border-gray-100 card-hover cursor-pointer" onclick="navigateTo('products')">
+        <i class="fas fa-bus text-2xl text-purple-600 mb-1"></i>
+        <p class="text-xs font-medium">Bus</p>
+      </div>
+      <div class="bg-white p-3 rounded-xl text-center shadow-sm border border-gray-100 card-hover cursor-pointer" onclick="navigateTo('products')">
+        <i class="fas fa-car-side text-2xl text-purple-600 mb-1"></i>
+        <p class="text-xs font-medium">LCV</p>
+      </div>
+      <div class="bg-white p-3 rounded-xl text-center shadow-sm border border-gray-100 card-hover cursor-pointer" onclick="navigateTo('products')">
+        <i class="fas fa-tractor text-2xl text-purple-600 mb-1"></i>
+        <p class="text-xs font-medium">Farm</p>
+      </div>
+      <div class="bg-white p-3 rounded-xl text-center shadow-sm border border-gray-100 card-hover cursor-pointer" onclick="navigateTo('products')">
+        <i class="fas fa-motorcycle text-2xl text-purple-600 mb-1"></i>
+        <p class="text-xs font-medium">2 Wheeler</p>
+      </div>
+      <div class="bg-white p-3 rounded-xl text-center shadow-sm border border-gray-100 card-hover cursor-pointer" onclick="navigateTo('products')">
+        <i class="fas fa-cogs text-2xl text-purple-600 mb-1"></i>
+        <p class="text-xs font-medium">OTR</p>
+      </div>
+    </div>
+  </section>
 
-  <!-- FOOTER -->
-  <footer class="mt-12 border-t border-gray-200/70 pt-6 text-sm text-gray-500 flex flex-wrap justify-between">
-    <span>© 2026 Magadh Tyres · dealer portal</span>
-    <span class="flex gap-4"><a href="#" data-page="about" class="hover:text-brand-purple">About</a><a href="#" data-page="contact" class="hover:text-brand-purple">Contact</a><a href="#" data-page="terms" class="hover:text-brand-purple">Terms</a><a href="#" data-page="privacy" class="hover:text-brand-purple">Privacy</a></span>
-  </footer>
-</div>
+  <!-- Educational blog section -->
+  <section>
+    <div class="flex justify-between items-center mb-3">
+      <h2 class="text-lg font-bold text-gray-800"><i class="fas fa-graduation-cap text-purple-600"></i> Tyre knowledge</h2>
+      <a href="#" onclick="showAlert('Blog section coming soon')" class="text-xs text-purple-700">Read more</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 card-hover cursor-pointer" onclick="showAlert('Article: How to increase tyre life')">
+        <div class="w-full h-24 bg-purple-100 rounded-xl mb-3 flex items-center justify-center text-purple-400"><i class="fas fa-book-open text-3xl"></i></div>
+        <h3 class="font-semibold text-gray-800">How to increase tyre life</h3>
+        <p class="text-xs text-gray-500 mt-1">Maintenance tips for fleet owners</p>
+      </div>
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 card-hover cursor-pointer" onclick="showAlert('Article: TCO reduction strategies')">
+        <div class="w-full h-24 bg-purple-100 rounded-xl mb-3 flex items-center justify-center text-purple-400"><i class="fas fa-chart-line text-3xl"></i></div>
+        <h3 class="font-semibold text-gray-800">TCO reduction strategies</h3>
+        <p class="text-xs text-gray-500 mt-1">Save with right tyre selection</p>
+      </div>
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 card-hover cursor-pointer" onclick="showAlert('Article: Retreading benefits')">
+        <div class="w-full h-24 bg-purple-100 rounded-xl mb-3 flex items-center justify-center text-purple-400"><i class="fas fa-leaf text-3xl"></i></div>
+        <h3 class="font-semibold text-gray-800">Retreading benefits</h3>
+        <p class="text-xs text-gray-500 mt-1">Sustainable & cost-effective</p>
+      </div>
+    </div>
+  </section>
 
-<!-- ===== ROUTER ===== -->
+  <!-- Additional page links (Products, Orders, Account, Reports, Profile, Contact) visually represented as quick dash -->
+  <section class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mt-2">
+    <h3 class="font-bold text-gray-800 mb-3 flex items-center gap-2"><i class="fas fa-compass text-purple-600"></i> Quick actions</h3>
+    <div class="grid grid-cols-3 md:grid-cols-6 gap-3 text-center text-sm">
+      <a href="#" onclick="navigateTo('products')" class="flex flex-col items-center p-2 hover:bg-purple-50 rounded-xl transition">
+        <i class="fas fa-box text-xl text-purple-600"></i><span class="mt-1">Products</span>
+      </a>
+      <a href="#" onclick="navigateTo('orders')" class="flex flex-col items-center p-2 hover:bg-purple-50 rounded-xl transition">
+        <i class="fas fa-clipboard-list text-xl text-purple-600"></i><span class="mt-1">My Orders</span>
+      </a>
+      <a href="#" onclick="navigateTo('account')" class="flex flex-col items-center p-2 hover:bg-purple-50 rounded-xl transition">
+        <i class="fas fa-wallet text-xl text-purple-600"></i><span class="mt-1">Account</span>
+      </a>
+      <a href="#" onclick="navigateTo('reports')" class="flex flex-col items-center p-2 hover:bg-purple-50 rounded-xl transition">
+        <i class="fas fa-file-pdf text-xl text-purple-600"></i><span class="mt-1">Reports</span>
+      </a>
+      <a href="#" onclick="navigateTo('profile')" class="flex flex-col items-center p-2 hover:bg-purple-50 rounded-xl transition">
+        <i class="fas fa-id-card text-xl text-purple-600"></i><span class="mt-1">Profile</span>
+      </a>
+      <a href="#" onclick="navigateTo('contact')" class="flex flex-col items-center p-2 hover:bg-purple-50 rounded-xl transition">
+        <i class="fas fa-phone-alt text-xl text-purple-600"></i><span class="mt-1">Contact</span>
+      </a>
+    </div>
+  </section>
+</main>
+
+<!-- Footer with clickable links -->
+<footer class="bg-white border-t border-gray-100 mt-8 py-6 px-4 text-center text-xs text-gray-500">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-2">
+    <span>© 2025 Magadhtyres – B2B tyre platform</span>
+    <span class="flex gap-4">
+      <a href="#" onclick="showAlert('Privacy Policy')" class="hover:text-purple-700">Privacy</a>
+      <a href="#" onclick="showAlert('Terms of Service')" class="hover:text-purple-700">Terms</a>
+      <a href="#" onclick="navigateTo('contact')" class="hover:text-purple-700"><i class="fas fa-headset"></i> Contact</a>
+    </span>
+  </div>
+</footer>
+
 <script>
-  (function() {
-    const pages = document.querySelectorAll('.page');
-    const navLinks = document.querySelectorAll('[data-page]');
-
-    function showPage(pageId) {
-      pages.forEach(p => p.classList.remove('active'));
-      const target = document.getElementById('page-' + pageId);
-      if (target) target.classList.add('active');
-      navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.dataset.page === pageId) link.classList.add('active');
-      });
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Navigation function - simulates page navigation with alert
+  function navigateTo(page) {
+    const pageNames = {
+      'home': 'Homepage',
+      'products': 'Products Page',
+      'orders': 'My Orders (Order History)',
+      'account': 'My Account (Payment Transaction History & Partial Payment Balance)',
+      'reports': 'My Reports (Invoice PDF Generation)',
+      'profile': 'My Profile',
+      'contact': 'Contact Us'
+    };
+    
+    const pageTitle = pageNames[page] || page;
+    alert(`Navigating to: ${pageTitle}\n\nThis is a demo. In production, this would load the actual page.`);
+    
+    // Update active state in navigation (visual feedback)
+    updateActiveNav(page);
+    
+    // Prevent default anchor behavior
+    event.preventDefault();
+  }
+  
+  // Toggle mobile menu
+  function toggleMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    if (menu.classList.contains('hidden')) {
+      menu.classList.remove('hidden');
+    } else {
+      menu.classList.add('hidden');
     }
-
-    navLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const page = link.dataset.page;
-        if (page) showPage(page);
-      });
+    event.preventDefault();
+  }
+  
+  // Show alert for clickable elements
+  function showAlert(message) {
+    alert(`${message}\n\nThis element is clickable and would perform an action in the full application.`);
+    event.preventDefault();
+  }
+  
+  // Update active navigation state
+  function updateActiveNav(page) {
+    // Remove all active states
+    document.querySelectorAll('nav a').forEach(link => {
+      link.classList.remove('text-purple-700', 'font-bold');
+      link.classList.add('text-gray-700');
     });
-
-    // default home
-    showPage('home');
-  })();
-</script>
-  
-window._config = {
-    cognito: {
-        userPoolId: 'us-east-1_VKZn9Dc4v', // e.g. us-east-2_uXbo65pAb
-        userPoolClientId: '26ibua8ee0mvj0sm42c0qr3tou', // e.g. 25ddkmj4v6hfsfvruhpfi7n4hv
-        region: 'us-east-1' // e.g. us-east-1
-    },
-    api: {
-        invokeUrl: '' // e.g. https://rc7nyt4tql.execute-api.us-west-2.amazonaws.com/prod',
+    
+    // Add active state to current page link
+    const activeLink = document.querySelector(`nav a[href="#"][onclick*="${page}"]`);
+    if (activeLink) {
+      activeLink.classList.add('text-purple-700', 'font-bold');
     }
-};
+  }
   
-<!-- Toast notification (demo) -->
-<div class="fixed bottom-6 right-6 bg-charcoal text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 glass" style="backdrop-filter:blur(8px); background: rgba(30,41,59,0.8);">
-  <i class="fas fa-check-circle text-accent-gold"></i> <span>Welcome, dealer · ready to order?</span>
-</div>
+  // Initialize - set home as active
+  document.addEventListener('DOMContentLoaded', function() {
+    updateActiveNav('home');
+    
+    // Add click handlers to all elements with onclick attributes
+    document.querySelectorAll('[onclick]').forEach(element => {
+      element.style.cursor = 'pointer';
+    });
+  });
+  
+  // Add keyboard navigation support
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      const menu = document.getElementById('mobileMenu');
+      if (menu && !menu.classList.contains('hidden')) {
+        menu.classList.add('hidden');
+      }
+    }
+  });
+  
+  // Close mobile menu when clicking outside
+  document.addEventListener('click', function(event) {
+    const menu = document.getElementById('mobileMenu');
+    const menuButton = document.querySelector('.mobile-only button');
+    
+    if (menu && !menu.classList.contains('hidden')) {
+      if (!menu.contains(event.target) && !menuButton.contains(event.target)) {
+        menu.classList.add('hidden');
+      }
+    }
+  });
+</script>
+
 </body>
 </html>
